@@ -87,7 +87,8 @@ HW02_DomainTesting/
     ├── pool A/                                        # 16 ảnh PNG minh chứng thực thi FR-04 (EXE-01 đến EXE-16)
     ├── pool B/                                        # 13 ảnh PNG minh chứng thực thi FR-08 (EXE-01 đến EXE-13)
     ├── pool C/                                        # 14 ảnh PNG minh chứng thực thi FR-17 (EXE-01 đến EXE-14)
-    └── pool D/                                        # 14 ảnh PNG minh chứng thực thi FR-05 (EXE-01 đến EXE-14)
+    ├── pool D/                                        # 14 ảnh PNG minh chứng thực thi FR-05 (EXE-01 đến EXE-14)
+    └── github-issues/                                 # Ảnh chụp màn hình trang GitHub Issues theo yêu cầu Mục 14 đề bài
 ```
 
 ---
