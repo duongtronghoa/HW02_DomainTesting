@@ -6,7 +6,10 @@
     "number": 22,
     "title": "[BUG-FR04-001] Hệ thống từ chối số điện thoại 10 và 11 chữ số hợp lệ và thông báo sai lệch 9-10 chữ số",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/22",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 2,
@@ -15,7 +18,10 @@
     "number": 23,
     "title": "[BUG-FR04-002] Hệ thống cho phép cập nhật và lưu Địa chỉ giao hàng rỗng vào CSDL",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/23",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 3,
@@ -24,7 +30,10 @@
     "number": 24,
     "title": "[BUG-FR04-003] Không giới hạn độ dài tối đa 255 ký tự cho trường Họ Tên và Địa chỉ",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/24",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 4,
@@ -33,7 +42,10 @@
     "number": 25,
     "title": "[BUG-FR04-004] Hệ thống chấp nhận số điện thoại không bắt đầu bằng số 0",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/25",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 5,
@@ -42,7 +54,10 @@
     "number": 26,
     "title": "[BUG-FR04-005] Lỗ hổng Leo thang đặc quyền (Privilege Escalation) cho phép User tự đổi role=\"admin\"",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/26",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 6,
@@ -51,7 +66,10 @@
     "number": 27,
     "title": "[BUG-FR08-001] Lỗ hổng Gian lận giá (Price Tampering) cho phép sửa tổng tiền thanh toán qua UI và API",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/27",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 7,
@@ -60,7 +78,10 @@
     "number": 28,
     "title": "[BUG-FR08-002] Giỏ hàng không được xóa sạch sau khi thanh toán thành công",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/28",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 8,
@@ -69,7 +90,10 @@
     "number": 29,
     "title": "[BUG-FR08-003] Form Checkout thiếu hoàn toàn trường Địa chỉ giao hàng và Backend chấp nhận lưu địa chỉ rỗng",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/29",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 9,
@@ -78,7 +102,10 @@
     "number": 30,
     "title": "[BUG-FR08-004] Trang Checkout không có thẻ <h1> mô tả tiêu đề trang (đang dùng <h2>)",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/30",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 10,
@@ -87,7 +114,10 @@
     "number": 31,
     "title": "[BUG-FR08-005] Hệ thống cho phép đặt hàng khi giỏ hàng hoàn toàn trống (items.length = 0) với tổng tiền 0 ₫",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/31",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 11,
@@ -96,7 +126,10 @@
     "number": 32,
     "title": "[BUG-FR08-006] Backend chấp nhận tạo đơn hàng với sản phẩm có số lượng âm (quantity = -2)",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/32",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 12,
@@ -105,7 +138,10 @@
     "number": 33,
     "title": "[BUG-FR08-007] Không giới hạn độ dài tối đa 255 ký tự cho trường Địa chỉ giao hàng",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/33",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 13,
@@ -114,7 +150,10 @@
     "number": 34,
     "title": "[BUG-FR17-001] Lỗ hổng Broken Access Control cho phép người dùng thường tự tạo và xóa mã giảm giá",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/34",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 14,
@@ -123,7 +162,10 @@
     "number": 35,
     "title": "[BUG-FR17-002] Backend gặp lỗi 500 Internal Server Error và văng exception SQLite khi tạo mã giảm giá bị trùng lặp",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/35",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 15,
@@ -132,7 +174,10 @@
     "number": 36,
     "title": "[BUG-FR17-003] Backend không kiểm tra ràng buộc số dương cho discount_value, min_order_amount và max_uses_per_user",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/36",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 16,
@@ -141,7 +186,10 @@
     "number": 37,
     "title": "[BUG-FR17-004] Cho phép tạo mã giảm giá theo phần trăm vượt quá 100% (discount_value = 150%)",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/37",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 17,
@@ -150,7 +198,10 @@
     "number": 38,
     "title": "[BUG-FR17-005] Xóa mã giảm giá với ID không tồn tại trả về HTTP 200 OK thay vì HTTP 404 Not Found",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/38",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug"
+    ]
   },
   {
     "index": 18,
@@ -159,7 +210,11 @@
     "number": 39,
     "title": "[BUG-FR05-001] Lỗ hổng SQL Injection tại ô tìm kiếm sản phẩm và rò rỉ mã HTML lỗi 500 trên Mobile",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/39",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug",
+      "mobile"
+    ]
   },
   {
     "index": 19,
@@ -168,7 +223,11 @@
     "number": 40,
     "title": "[BUG-FR05-002] Ứng dụng Mobile hoàn toàn thiếu màn hình Empty State khi tìm kiếm không có kết quả",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/40",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug",
+      "mobile"
+    ]
   },
   {
     "index": 20,
@@ -177,7 +236,11 @@
     "number": 41,
     "title": "[BUG-FR05-003] Backend không cắt bỏ khoảng trắng thừa (untrimmed whitespace), khiến tìm kiếm thất bại",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/41",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug",
+      "mobile"
+    ]
   },
   {
     "index": 21,
@@ -186,6 +249,10 @@
     "number": 42,
     "title": "[BUG-FR05-004] Ảnh sản phẩm bị co giãn méo tỷ lệ (resizeMode stretch) và thiếu thuộc tính alt text mô tả",
     "url": "https://github.com/thu2005/CSC13003_eshop/issues/42",
-    "status": "Created"
+    "status": "Created",
+    "labels": [
+      "bug",
+      "mobile"
+    ]
   }
 ]

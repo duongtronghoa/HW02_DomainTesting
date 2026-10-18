@@ -116,29 +116,29 @@ Trong quá trình thực thi kiểm thử trên hệ thống EShop thực tế, 
 * **Trang danh sách Issues nhóm:** [`https://github.com/thu2005/CSC13003_eshop/issues`](https://github.com/thu2005/CSC13003_eshop/issues)
 * **Kho cá nhân lưu trữ minh chứng (Backup & Evidence):** [`https://github.com/duongtronghoa/HW02_DomainTesting`](https://github.com/duongtronghoa/HW02_DomainTesting)
 
-| STT | Issue # | Mã lỗi (Bug ID) | Tính năng | Tiêu đề Issue trên GitHub | Trực tiếp trên GitHub |
-| :---: | :---: | :---: | :---: | :--- | :---: |
-| 1 | **#22** | `BUG-FR04-001` | FR-04 (Pool A) | `[BUG-FR04-001] Hệ thống từ chối số điện thoại 10 và 11 chữ số hợp lệ và thông báo sai lệch 9-10 chữ số` | [Xem Issue #22](https://github.com/thu2005/CSC13003_eshop/issues/22) |
-| 2 | **#23** | `BUG-FR04-002` | FR-04 (Pool A) | `[BUG-FR04-002] Hệ thống cho phép cập nhật và lưu Địa chỉ giao hàng rỗng vào CSDL` | [Xem Issue #23](https://github.com/thu2005/CSC13003_eshop/issues/23) |
-| 3 | **#24** | `BUG-FR04-003` | FR-04 (Pool A) | `[BUG-FR04-003] Không giới hạn độ dài tối đa 255 ký tự cho trường Họ Tên và Địa chỉ` | [Xem Issue #24](https://github.com/thu2005/CSC13003_eshop/issues/24) |
-| 4 | **#25** | `BUG-FR04-004` | FR-04 (Pool A) | `[BUG-FR04-004] Hệ thống chấp nhận số điện thoại không bắt đầu bằng số 0` | [Xem Issue #25](https://github.com/thu2005/CSC13003_eshop/issues/25) |
-| 5 | **#26** | `BUG-FR04-005` | FR-04 (Pool A) | `[BUG-FR04-005] Lỗ hổng Leo thang đặc quyền (Privilege Escalation) cho phép User tự đổi role="admin"` | [Xem Issue #26](https://github.com/thu2005/CSC13003_eshop/issues/26) |
-| 6 | **#27** | `BUG-FR08-001` | FR-08 (Pool B) | `[BUG-FR08-001] Lỗ hổng Gian lận giá (Price Tampering) cho phép sửa tổng tiền thanh toán qua UI và API` | [Xem Issue #27](https://github.com/thu2005/CSC13003_eshop/issues/27) |
-| 7 | **#28** | `BUG-FR08-002` | FR-08 (Pool B) | `[BUG-FR08-002] Giỏ hàng không được xóa sạch sau khi thanh toán thành công` | [Xem Issue #28](https://github.com/thu2005/CSC13003_eshop/issues/28) |
-| 8 | **#29** | `BUG-FR08-003` | FR-08 (Pool B) | `[BUG-FR08-003] Form Checkout thiếu hoàn toàn trường Địa chỉ giao hàng và Backend chấp nhận lưu địa chỉ rỗng` | [Xem Issue #29](https://github.com/thu2005/CSC13003_eshop/issues/29) |
-| 9 | **#30** | `BUG-FR08-004` | FR-08 (Pool B) | `[BUG-FR08-004] Trang Checkout không có thẻ <h1> mô tả tiêu đề trang (đang dùng <h2>)` | [Xem Issue #30](https://github.com/thu2005/CSC13003_eshop/issues/30) |
-| 10 | **#31** | `BUG-FR08-005` | FR-08 (Pool B) | `[BUG-FR08-005] Hệ thống cho phép đặt hàng khi giỏ hàng hoàn toàn trống (items.length = 0) với tổng tiền 0 ₫` | [Xem Issue #31](https://github.com/thu2005/CSC13003_eshop/issues/31) |
-| 11 | **#32** | `BUG-FR08-006` | FR-08 (Pool B) | `[BUG-FR08-006] Backend chấp nhận tạo đơn hàng với sản phẩm có số lượng âm (quantity = -2)` | [Xem Issue #32](https://github.com/thu2005/CSC13003_eshop/issues/32) |
-| 12 | **#33** | `BUG-FR08-007` | FR-08 (Pool B) | `[BUG-FR08-007] Không giới hạn độ dài tối đa 255 ký tự cho trường Địa chỉ giao hàng` | [Xem Issue #33](https://github.com/thu2005/CSC13003_eshop/issues/33) |
-| 13 | **#34** | `BUG-FR17-001` | FR-17 (Pool C) | `[BUG-FR17-001] Lỗ hổng Broken Access Control cho phép người dùng thường tự tạo và xóa mã giảm giá` | [Xem Issue #34](https://github.com/thu2005/CSC13003_eshop/issues/34) |
-| 14 | **#35** | `BUG-FR17-002` | FR-17 (Pool C) | `[BUG-FR17-002] Backend gặp lỗi 500 Internal Server Error và văng exception SQLite khi tạo mã giảm giá bị trùng lặp` | [Xem Issue #35](https://github.com/thu2005/CSC13003_eshop/issues/35) |
-| 15 | **#36** | `BUG-FR17-003` | FR-17 (Pool C) | `[BUG-FR17-003] Backend không kiểm tra ràng buộc số dương cho discount_value, min_order_amount và max_uses_per_user` | [Xem Issue #36](https://github.com/thu2005/CSC13003_eshop/issues/36) |
-| 16 | **#37** | `BUG-FR17-004` | FR-17 (Pool C) | `[BUG-FR17-004] Cho phép tạo mã giảm giá theo phần trăm vượt quá 100% (discount_value = 150%)` | [Xem Issue #37](https://github.com/thu2005/CSC13003_eshop/issues/37) |
-| 17 | **#38** | `BUG-FR17-005` | FR-17 (Pool C) | `[BUG-FR17-005] Xóa mã giảm giá với ID không tồn tại trả về HTTP 200 OK thay vì HTTP 404 Not Found` | [Xem Issue #38](https://github.com/thu2005/CSC13003_eshop/issues/38) |
-| 18 | **#39** | `BUG-FR05-001` | FR-05 (Pool D) | `[BUG-FR05-001] Lỗ hổng SQL Injection tại ô tìm kiếm sản phẩm và rò rỉ mã HTML lỗi 500 trên Mobile` | [Xem Issue #39](https://github.com/thu2005/CSC13003_eshop/issues/39) |
-| 19 | **#40** | `BUG-FR05-002` | FR-05 (Pool D) | `[BUG-FR05-002] Ứng dụng Mobile hoàn toàn thiếu màn hình Empty State khi tìm kiếm không có kết quả` | [Xem Issue #40](https://github.com/thu2005/CSC13003_eshop/issues/40) |
-| 20 | **#41** | `BUG-FR05-003` | FR-05 (Pool D) | `[BUG-FR05-003] Backend không cắt bỏ khoảng trắng thừa (untrimmed whitespace), khiến tìm kiếm thất bại` | [Xem Issue #41](https://github.com/thu2005/CSC13003_eshop/issues/41) |
-| 21 | **#42** | `BUG-FR05-004` | FR-05 (Pool D) | `[BUG-FR05-004] Ảnh sản phẩm bị co giãn méo tỷ lệ (resizeMode stretch) và thiếu thuộc tính alt text mô tả` | [Xem Issue #42](https://github.com/thu2005/CSC13003_eshop/issues/42) |
+| STT | Issue # | Mã lỗi (Bug ID) | Phân hệ (Pool) | Labels | Tiêu đề Issue trên GitHub | Trực tiếp trên GitHub |
+| :---: | :---: | :---: | :---: | :---: | :--- | :---: |
+| 1 | **#22** | `BUG-FR04-001` | FR-04 (Pool A) | `bug` | `[BUG-FR04-001] Hệ thống từ chối số điện thoại 10 và 11 chữ số hợp lệ và thông báo sai lệch 9-10 chữ số` | [Xem Issue #22](https://github.com/thu2005/CSC13003_eshop/issues/22) |
+| 2 | **#23** | `BUG-FR04-002` | FR-04 (Pool A) | `bug` | `[BUG-FR04-002] Hệ thống cho phép cập nhật và lưu Địa chỉ giao hàng rỗng vào CSDL` | [Xem Issue #23](https://github.com/thu2005/CSC13003_eshop/issues/23) |
+| 3 | **#24** | `BUG-FR04-003` | FR-04 (Pool A) | `bug` | `[BUG-FR04-003] Không giới hạn độ dài tối đa 255 ký tự cho trường Họ Tên và Địa chỉ` | [Xem Issue #24](https://github.com/thu2005/CSC13003_eshop/issues/24) |
+| 4 | **#25** | `BUG-FR04-004` | FR-04 (Pool A) | `bug` | `[BUG-FR04-004] Hệ thống chấp nhận số điện thoại không bắt đầu bằng số 0` | [Xem Issue #25](https://github.com/thu2005/CSC13003_eshop/issues/25) |
+| 5 | **#26** | `BUG-FR04-005` | FR-04 (Pool A) | `bug` | `[BUG-FR04-005] Lỗ hổng Leo thang đặc quyền (Privilege Escalation) cho phép User tự đổi role="admin"` | [Xem Issue #26](https://github.com/thu2005/CSC13003_eshop/issues/26) |
+| 6 | **#27** | `BUG-FR08-001` | FR-08 (Pool B) | `bug` | `[BUG-FR08-001] Lỗ hổng Gian lận giá (Price Tampering) cho phép sửa tổng tiền thanh toán qua UI và API` | [Xem Issue #27](https://github.com/thu2005/CSC13003_eshop/issues/27) |
+| 7 | **#28** | `BUG-FR08-002` | FR-08 (Pool B) | `bug` | `[BUG-FR08-002] Giỏ hàng không được xóa sạch sau khi thanh toán thành công` | [Xem Issue #28](https://github.com/thu2005/CSC13003_eshop/issues/28) |
+| 8 | **#29** | `BUG-FR08-003` | FR-08 (Pool B) | `bug` | `[BUG-FR08-003] Form Checkout thiếu hoàn toàn trường Địa chỉ giao hàng và Backend chấp nhận lưu địa chỉ rỗng` | [Xem Issue #29](https://github.com/thu2005/CSC13003_eshop/issues/29) |
+| 9 | **#30** | `BUG-FR08-004` | FR-08 (Pool B) | `bug` | `[BUG-FR08-004] Trang Checkout không có thẻ <h1> mô tả tiêu đề trang (đang dùng <h2>)` | [Xem Issue #30](https://github.com/thu2005/CSC13003_eshop/issues/30) |
+| 10 | **#31** | `BUG-FR08-005` | FR-08 (Pool B) | `bug` | `[BUG-FR08-005] Hệ thống cho phép đặt hàng khi giỏ hàng hoàn toàn trống (items.length = 0) với tổng tiền 0 ₫` | [Xem Issue #31](https://github.com/thu2005/CSC13003_eshop/issues/31) |
+| 11 | **#32** | `BUG-FR08-006` | FR-08 (Pool B) | `bug` | `[BUG-FR08-006] Backend chấp nhận tạo đơn hàng với sản phẩm có số lượng âm (quantity = -2)` | [Xem Issue #32](https://github.com/thu2005/CSC13003_eshop/issues/32) |
+| 12 | **#33** | `BUG-FR08-007` | FR-08 (Pool B) | `bug` | `[BUG-FR08-007] Không giới hạn độ dài tối đa 255 ký tự cho trường Địa chỉ giao hàng` | [Xem Issue #33](https://github.com/thu2005/CSC13003_eshop/issues/33) |
+| 13 | **#34** | `BUG-FR17-001` | FR-17 (Pool C) | `bug` | `[BUG-FR17-001] Lỗ hổng Broken Access Control cho phép người dùng thường tự tạo và xóa mã giảm giá` | [Xem Issue #34](https://github.com/thu2005/CSC13003_eshop/issues/34) |
+| 14 | **#35** | `BUG-FR17-002` | FR-17 (Pool C) | `bug` | `[BUG-FR17-002] Backend gặp lỗi 500 Internal Server Error và văng exception SQLite khi tạo mã giảm giá bị trùng lặp` | [Xem Issue #35](https://github.com/thu2005/CSC13003_eshop/issues/35) |
+| 15 | **#36** | `BUG-FR17-003` | FR-17 (Pool C) | `bug` | `[BUG-FR17-003] Backend không kiểm tra ràng buộc số dương cho discount_value, min_order_amount và max_uses_per_user` | [Xem Issue #36](https://github.com/thu2005/CSC13003_eshop/issues/36) |
+| 16 | **#37** | `BUG-FR17-004` | FR-17 (Pool C) | `bug` | `[BUG-FR17-004] Cho phép tạo mã giảm giá theo phần trăm vượt quá 100% (discount_value = 150%)` | [Xem Issue #37](https://github.com/thu2005/CSC13003_eshop/issues/37) |
+| 17 | **#38** | `BUG-FR17-005` | FR-17 (Pool C) | `bug` | `[BUG-FR17-005] Xóa mã giảm giá với ID không tồn tại trả về HTTP 200 OK thay vì HTTP 404 Not Found` | [Xem Issue #38](https://github.com/thu2005/CSC13003_eshop/issues/38) |
+| 18 | **#39** | `BUG-FR05-001` | FR-05 (Pool D) | `bug`, `mobile` | `[BUG-FR05-001] Lỗ hổng SQL Injection tại ô tìm kiếm sản phẩm và rò rỉ mã HTML lỗi 500 trên Mobile` | [Xem Issue #39](https://github.com/thu2005/CSC13003_eshop/issues/39) |
+| 19 | **#40** | `BUG-FR05-002` | FR-05 (Pool D) | `bug`, `mobile` | `[BUG-FR05-002] Ứng dụng Mobile hoàn toàn thiếu màn hình Empty State khi tìm kiếm không có kết quả` | [Xem Issue #40](https://github.com/thu2005/CSC13003_eshop/issues/40) |
+| 20 | **#41** | `BUG-FR05-003` | FR-05 (Pool D) | `bug`, `mobile` | `[BUG-FR05-003] Backend không cắt bỏ khoảng trắng thừa (untrimmed whitespace), khiến tìm kiếm thất bại` | [Xem Issue #41](https://github.com/thu2005/CSC13003_eshop/issues/41) |
+| 21 | **#42** | `BUG-FR05-004` | FR-05 (Pool D) | `bug`, `mobile` | `[BUG-FR05-004] Ảnh sản phẩm bị co giãn méo tỷ lệ (resizeMode stretch) và thiếu thuộc tính alt text mô tả` | [Xem Issue #42](https://github.com/thu2005/CSC13003_eshop/issues/42) |
 
 ---
 
