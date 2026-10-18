@@ -1,189 +1,231 @@
-﻿# BÃO CÃO CHI TIáº¾T DANH SÃCH Lá»–I (BUG REPORT)
-## TÃNH NÄ‚NG FR-17: QUáº¢N LÃ MÃƒ GIáº¢M GIÃ (COUPON CRUD) (POOL C)
+# BÁO CÁO CHI TIẾT DANH SÁCH LỖI (BUG REPORT)
+## TÍNH NĂNG FR-17: QUẢN LÝ MÃ GIẢM GIÁ (COUPON CRUD) (POOL C)
 
-* **MÃ£ sinh viÃªn:** 23120127
-* **Há» vÃ  tÃªn:** DÆ°Æ¡ng Trá»ng HÃ²a
-* **Há»‡ thá»‘ng Ä‘Æ°á»£c kiá»ƒm thá»­ (SUT):** EShop Platform (`http://localhost:5173` / Backend API `http://localhost:3000`)
-* **Tá»•ng sá»‘ lá»—i phÃ¡t hiá»‡n:** 5 nhÃ³m lá»—i (1 Critical, 3 High, 1 Low/Medium)
-* **NgÃ y láº­p bÃ¡o cÃ¡o:** 2026-10-18
-
----
-
-## DANH SÃCH CHI TIáº¾T CÃC Lá»–I ÄÃƒ PHÃT HIá»†N
+* **Mã sinh viên:** 23120127
+* **Họ và tên:** Dương Trọng Hòa
+* **Hệ thống được kiểm thử (SUT):** EShop Platform (`http://localhost:5173` / Backend API `http://localhost:3000`)
+* **Tổng số lỗi phát hiện:** 5 nhóm lỗi (1 Critical, 3 High, 1 Low/Medium)
+* **Ngày lập báo cáo:** 2026-10-18
 
 ---
 
-### ðŸš¨ BUG #1: BUG-FR17-01 (CRITICAL - SECURITY / BROKEN ACCESS CONTROL)
-
-* **TiÃªu Ä‘á» Issue:** `[FR-17][SEC-03][CRITICAL] Lá»— há»•ng Broken Access Control cho phÃ©p ngÆ°á»i dÃ¹ng thÆ°á»ng tá»± táº¡o vÃ  xÃ³a mÃ£ giáº£m giÃ¡`
-* **NhÃ£n (Labels):** `bug`, `critical`, `security`, `FR-17`, `access-control`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** Critical (Kiá»ƒm soÃ¡t truy cáº­p bá»‹ phÃ¡ vá»¡)
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** Urgent / Immediate
-* **MÃ´i trÆ°á»ng:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
-
-#### 1. MÃ´ táº£ lá»—i
-Theo Ä‘áº·c táº£ FR-12 vÃ  SEC-03: *"Táº¥t cáº£ cÃ¡c chá»©c nÄƒng quáº£n trá»‹ trong Web Admin (bao gá»“m thÃªm má»›i vÃ  xÃ³a mÃ£ giáº£m giÃ¡) chá»‰ dÃ nh riÃªng cho tÃ i khoáº£n cÃ³ vai trÃ² Quáº£n trá»‹ viÃªn (role = 'admin'). NgÆ°á»i dÃ¹ng thÃ´ng thÆ°á»ng (role = 'user') hoÃ n toÃ n bá»‹ cáº¥m truy cáº­p"*.
-Tuy nhiÃªn, táº¡i `backend/server.js`:
-- Endpoint `POST /api/admin/coupons` (dÃ²ng 457) vÃ  `DELETE /api/admin/coupons/:id` (dÃ²ng 483) chá»‰ sá»­ dá»¥ng middleware `authenticateToken` Ä‘á»ƒ kiá»ƒm tra Ä‘Äƒng nháº­p mÃ  **hoÃ n toÃ n khÃ´ng kiá»ƒm tra `req.user.role === 'admin'`**.
-
-Háº­u quáº£: TÃ i khoáº£n ngÆ°á»i dÃ¹ng bÃ¬nh thÆ°á»ng (`test@eshop.com`, `role = 'user'`) cÃ³ thá»ƒ gá»­i HTTP request táº¡o mÃ£ giáº£m giÃ¡ 1.000.000 â‚« hoáº·c xÃ³a sáº¡ch toÃ n bá»™ mÃ£ giáº£m giÃ¡ cá»§a há»‡ thá»‘ng, gÃ¢y thiá»‡t háº¡i tÃ i chÃ­nh nghiÃªm trá»ng!
-
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. ÄÄƒng nháº­p vá»›i tÃ i khoáº£n ngÆ°á»i dÃ¹ng thÆ°á»ng: `test@eshop.com` / `Test1234!` Ä‘á»ƒ láº¥y JWT Token (`role = 'user'`).
-2. Gá»­i request `POST /api/admin/coupons` vá»›i Header `Authorization: Bearer <user_token>` vÃ  payload:
-```json
-{
-  "code": "HACKER1000K",
-  "discount_type": "fixed",
-  "discount_value": 1000000,
-  "min_order_amount": 0,
-  "max_uses_per_user": 10
-}
-```
-3. Quan sÃ¡t káº¿t quáº£ API vÃ  danh sÃ¡ch mÃ£ trong há»‡ thá»‘ng.
-4. Gá»­i request `DELETE /api/admin/coupons/:id` vá»›i token user thÆ°á»ng Ä‘á»ƒ xÃ³a coupon cá»§a há»‡ thá»‘ng.
-
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Há»‡ thá»‘ng tá»« chá»‘i yÃªu cáº§u vá»›i mÃ£ lá»—i **HTTP 403 Forbidden** theo chuáº©n an ninh phÃ¢n quyá»n FR-12 vÃ  SEC-03.
-
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-API tráº£ vá» **HTTP 200 OK**, táº¡o thÃ nh cÃ´ng mÃ£ giáº£m giÃ¡ vÃ  cho phÃ©p user thÆ°á»ng xÃ³a mÃ£ giáº£m giÃ¡ cá»§a Admin.
-
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng táº¡o mÃ£:** [screenshots/pool C/EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png](../screenshots/pool%20C/EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png)
-* Minh chá»©ng xÃ³a mÃ£ trÃ¡i phÃ©p: [screenshots/pool C/EXE-05_Bug_Critical_NonAdmin_Delete_Coupon.png](../screenshots/pool%20C/EXE-05_Bug_Critical_NonAdmin_Delete_Coupon.png)
+## DANH SÁCH CHI TIẾT CÁC LỖI ĐÃ PHÁT HIỆN
 
 ---
 
-### ðŸ› BUG #2: BUG-FR17-02 (High - Crash / Error Handling)
+### 🚨 BUG #1: BUG-FR17-01 (CRITICAL - SECURITY / BROKEN ACCESS CONTROL)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-17][HIGH] Backend gáº·p sá»± cá»‘ sáº­p HTTP 500 do Unhandled SQLite Constraint khi táº¡o mÃ£ giáº£m giÃ¡ bá»‹ trÃ¹ng láº·p`
-* **NhÃ£n (Labels):** `bug`, `high`, `FR-17`, `crash`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** High
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** High
+* **Tiêu đề Issue:** `[FR-17][SEC-03][CRITICAL] Lỗ hổng Broken Access Control cho phép người dùng thường tự tạo và xóa mã giảm giá`
+* **Nhãn (Labels):** ``bug`, `critical`, `security`, `FR-17`, `access-control``
+* **Mức độ nghiêm trọng (Severity):** Critical (Lỗ hổng bảo mật nghiêm trọng - Kiểm soát truy cập bị phá vỡ)
+* **Mức độ ưu tiên (Priority):** Urgent / Immediate
+* **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
 
-#### 1. MÃ´ táº£ lá»—i
-TrÆ°á»ng `code` trong báº£ng `coupons` cÃ³ rÃ ng buá»™c duy nháº¥t (`UNIQUE`). Khi ngÆ°á»i dÃ¹ng nháº­p má»™t mÃ£ code Ä‘Ã£ tá»“n táº¡i trong CSDL (vÃ­ dá»¥: `"WELCOME10"`), Backend khÃ´ng báº¯t lá»—i xÃ¡c thá»±c mÃ  Ä‘á»ƒ CSDL SQLite vÄƒng ngoáº¡i lá»‡ thÃ´ `SQLITE_CONSTRAINT: UNIQUE constraint failed: coupons.code`, lÃ m sáº­p luá»“ng xá»­ lÃ½ vÃ  tráº£ vá» HTTP 500 Internal Server Error.
+#### 1. Mô tả lỗi
+Theo đặc tả FR-12 và SEC-03:
+> *"Tất cả các chức năng quản trị trong Web Admin (bao gồm thêm mới và xóa mã giảm giá) chỉ dành riêng cho tài khoản có vai trò Quản trị viên (role = 'admin'). Người dùng thông thường (role = 'user') hoàn toàn bị cấm truy cập."*
 
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. ÄÄƒng nháº­p tÃ i khoáº£n Admin, Ä‘iá»u hÆ°á»›ng vÃ o trang Quáº£n lÃ½ mÃ£ giáº£m giÃ¡ (`http://localhost:5174/coupons`).
-2. Nháº­p mÃ£ code Ä‘Ã£ cÃ³ sáºµn: `code: "WELCOME10"`.
-3. Nháº­p cÃ¡c trÆ°á»ng dá»¯ liá»‡u há»£p lá»‡ khÃ¡c vÃ  báº¥m **ThÃªm MÃ£ Giáº£m GiÃ¡**.
+Tuy nhiên, kiểm tra mã nguồn Backend tại `backend/server.js`:
+- Endpoint `POST /api/admin/coupons` (dòng 457) chỉ sử dụng middleware `authenticateToken` để kiểm tra đăng nhập mà **hoàn toàn không kiểm tra `req.user.role === 'admin'`**.
+- Tương tự, endpoint `DELETE /api/admin/coupons/:id` (dòng 483) cũng chỉ xác thực Token thông thường.
 
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Há»‡ thá»‘ng xá»­ lÃ½ lá»—i thÃ¢n thiá»‡n, tráº£ vá» mÃ£ lá»—i **HTTP 400 Bad Request** hoáº·c **409 Conflict** kÃ¨m thÃ´ng Ä‘iá»‡p *"MÃ£ giáº£m giÃ¡ Ä‘Ã£ tá»“n táº¡i"*.
+Hậu quả: Một tài khoản người dùng bình thường (`test@eshop.com`, `role = 'user'`) có thể gửi HTTP request tạo mã giảm giá 1.000.000 ₫ hoặc xóa sạch toàn bộ mã giảm giá của hệ thống, gây thiệt hại tài chính và làm gián đoạn vận hành của cửa hàng!
 
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-Backend tráº£ vá» **HTTP 500 Internal Server Error** vá»›i mÃ£ lá»—i SQLite unhandled.
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Đăng nhập với tài khoản người dùng thường: `test@eshop.com` / `Test1234!` để lấy JWT Token (`role = 'user'`).
+2. Gửi request `POST /api/admin/coupons` với Header `Authorization: Bearer <user_token>` và payload:
+   ```json
+   {
+     "code": "HACKER1000K",
+     "discount_type": "fixed",
+     "discount_value": 1000000,
+     "min_order_amount": 0,
+     "max_uses_per_user": 100
+   }
+   ```
+3. Quan sát phản hồi API: Trả về HTTP 200 OK `"Coupon created successfully"`.
+4. Gửi request `DELETE /api/admin/coupons/:id` bằng Token người dùng thường: Trả về HTTP 200 OK `"Coupon deleted"`.
 
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool C/EXE-07_Bug_Duplicate_Code_500_Error.png](../screenshots/pool%20C/EXE-07_Bug_Duplicate_Code_500_Error.png)
+#### 3. Kết quả mong đợi (Expected Result)
+Hệ thống phải kiểm tra vai trò Quản trị viên và từ chối mọi yêu cầu từ tài khoản thường với mã lỗi **HTTP 403 Forbidden**:
 
----
+#### 4. Kết quả thực tế (Actual Result)
 
-### ðŸ› BUG #3: BUG-FR17-03 (High - Data Validation & Boundary Violations)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-17][HIGH] Backend khÃ´ng kiá»ƒm tra rÃ ng buá»™c sá»‘ dÆ°Æ¡ng cho discount_value, min_order_amount vÃ  max_uses_per_user`
-* **NhÃ£n (Labels):** `bug`, `high`, `FR-17`, `validation`, `boundary`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** High
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** High
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png`](../screenshots/pool%20C/EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png)
 
-#### 1. MÃ´ táº£ lá»—i
-Theo Ä‘áº·c táº£ nghiá»‡p vá»¥ FR-17:
-- `discount_value`: Pháº£i lÃ  sá»‘ dÆ°Æ¡ng $> 0$.
-- `min_order_amount`: Pháº£i lÃ  sá»‘ nguyÃªn khÃ´ng Ã¢m $\ge 0$.
-- `max_uses_per_user`: Pháº£i lÃ  sá»‘ nguyÃªn dÆ°Æ¡ng $\ge 1$.
-
-Tuy nhiÃªn, Backend `server.js` hoÃ n toÃ n khÃ´ng cÃ³ táº§ng kiá»ƒm tra dá»¯ liá»‡u Ä‘áº§u vÃ o (Input Validation), cháº¥p nháº­n cÃ¡c giÃ¡ trá»‹ vi pháº¡m biÃªn nghiÃªm trá»ng:
-1. Cho phÃ©p `discount_value = 0` (mÃ£ giáº£m 0 Ä‘á»“ng).
-2. Cho phÃ©p `discount_value = -50000` (giÃ¡ trá»‹ Ã¢m).
-3. Cho phÃ©p `min_order_amount = -10000` (Ä‘Æ¡n tá»‘i thiá»ƒu Ã¢m).
-4. Cho phÃ©p `max_uses_per_user = 0` (lÆ°á»£t dÃ¹ng báº±ng 0). Äáº·c biá»‡t, khi F5 Web Admin thÃ¬ giao diá»‡n láº¡i tá»± Ä‘á»™ng hiá»ƒn thá»‹ sá»‘ 1 (do fallback `max_uses || 1`), gÃ¢y báº¥t nháº¥t dá»¯ liá»‡u nghiÃªm trá»ng giá»¯a CSDL vÃ  UI.
-
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. Gá»­i request `POST /api/admin/coupons` vá»›i cÃ¡c giÃ¡ trá»‹ vi pháº¡m biÃªn:
-   - Request 1: `discount_value = 0`
-   - Request 2: `discount_value = -50000`
-   - Request 3: `min_order_amount = -10000`
-   - Request 4: `max_uses_per_user = 0`
-2. Kiá»ƒm tra pháº£n há»“i API vÃ  CSDL SQLite.
-
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Backend pháº£i tá»« chá»‘i cÃ¡c giÃ¡ trá»‹ khÃ´ng há»£p lá»‡ vá»›i mÃ£ lá»—i **HTTP 400 Bad Request**.
-
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-Táº¥t cáº£ cÃ¡c request trÃªn Ä‘á»u Ä‘Æ°á»£c Backend cháº¥p nháº­n vá»›i **HTTP 200 OK** vÃ  lÆ°u vÃ o SQLite.
-
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng má»©c giáº£m báº±ng 0:** [screenshots/pool C/EXE-08_Bug_BVA_DiscountValue_Zero_Accepted.png](../screenshots/pool%20C/EXE-08_Bug_BVA_DiscountValue_Zero_Accepted.png)
-* Minh chá»©ng má»©c giáº£m Ã¢m: [screenshots/pool C/EXE-09_Bug_Negative_DiscountValue_Accepted.png](../screenshots/pool%20C/EXE-09_Bug_Negative_DiscountValue_Accepted.png)
-* Minh chá»©ng Ä‘Æ¡n tá»‘i thiá»ƒu Ã¢m: [screenshots/pool C/EXE-11_Bug_BVA_MinOrderAmount_Negative_Accepted.png](../screenshots/pool%20C/EXE-11_Bug_BVA_MinOrderAmount_Negative_Accepted.png)
-* Minh chá»©ng max uses báº±ng 0: [screenshots/pool C/EXE-12_Bug_BVA_MaxUses_Zero_Accepted.png](../screenshots/pool%20C/EXE-12_Bug_BVA_MaxUses_Zero_Accepted.png)
+![EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png](../screenshots/pool%20C/EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png)
 
 ---
 
-### ðŸ› BUG #4: BUG-FR17-04 (High - Business Logic / Boundary Violation)
+### 💥 BUG #2: BUG-FR17-02 (HIGH - UNHANDLED EXCEPTION / CRASH ON DUPLICATE CODE)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-17][HIGH] Há»‡ thá»‘ng cho phÃ©p táº¡o mÃ£ giáº£m giÃ¡ loáº¡i pháº§n trÄƒm vÆ°á»£t quÃ¡ 100% (150%)`
-* **NhÃ£n (Labels):** `bug`, `high`, `FR-17`, `business-logic`, `boundary`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** High
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** High
+* **Tiêu đề Issue:** `[FR-17][HIGH] Backend gặp lỗi 500 Internal Server Error và văng exception SQLite khi tạo mã giảm giá bị trùng lặp`
+* **Nhãn (Labels):** ``bug`, `high`, `backend`, `FR-17`, `error-handling``
+* **Mức độ nghiêm trọng (Severity):** High (Lỗi sập luồng xử lý do không bắt ngoại lệ CSDL)
+* **Mức độ ưu tiên (Priority):** High
+* **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
 
-#### 1. MÃ´ táº£ lá»—i
-Äá»‘i vá»›i mÃ£ giáº£m giÃ¡ loáº¡i pháº§n trÄƒm (`discount_type = 'percent'`), ranh giá»›i nghiá»‡p vá»¥ chuáº©n theo Ä‘áº·c táº£ lÃ  tá»« $1\%$ Ä‘áº¿n $100\%$.
-Táº¡i ranh giá»›i kiá»ƒm thá»­ Max + 1 ($101\%$, $150\%$), Backend khÃ´ng kiá»ƒm tra cháº·n biÃªn trÃªn, cho phÃ©p táº¡o mÃ£ giáº£m giÃ¡ **150%** thÃ nh cÃ´ng. Äiá»u nÃ y lÃ m sai lá»‡ch toÃ n bá»™ cÃ´ng thá»©c tÃ­nh toÃ¡n tÃ i chÃ­nh khi Ã¡p dá»¥ng mÃ£ vÃ o Ä‘Æ¡n hÃ ng.
+#### 1. Mô tả lỗi
+Trong bảng `coupons` của SQLite, cột `code` được cấu hình ràng buộc `UNIQUE` (`code TEXT UNIQUE NOT NULL`).
+Khi Quản trị viên nhập mã giảm giá bị trùng với mã đã có trong hệ thống (ví dụ: `WELCOME10`), Backend `server.js` (dòng 460-475) thực hiện câu lệnh `INSERT` mà không kiểm tra sự tồn tại của mã trước, cũng không bắt mã lỗi ngoại lệ `SQLITE_CONSTRAINT: UNIQUE constraint failed`.
 
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. Gá»­i request `POST /api/admin/coupons` vá»›i payload:
-```json
-{
-  "code": "OVER100",
-  "discount_type": "percent",
-  "discount_value": 150,
-  "min_order_amount": 100000
-}
-```
-2. Kiá»ƒm tra CSDL SQLite.
+Khi ngoại lệ xảy ra, câu lệnh `if (err) return res.status(500).json({ error: err.message })` đã trả về lỗi **HTTP 500 Internal Server Error** kèm stack trace lộ thông tin cấu trúc CSDL cho client.
 
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Há»‡ thá»‘ng tá»« chá»‘i yÃªu cáº§u vá»›i mÃ£ lá»—i **HTTP 400 Bad Request** kÃ¨m thÃ´ng bÃ¡o pháº§n trÄƒm giáº£m giÃ¡ chá»‰ Ä‘Æ°á»£c náº±m trong khoáº£ng tá»« 1% Ä‘áº¿n 100%.
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Đăng nhập tài khoản Quản trị viên (`admin@eshop.com`).
+2. Gửi request tạo mã giảm giá với mã đã tồn tại sẵn trong CSDL:
+   ```json
+   {
+     "code": "WELCOME10",
+     "discount_type": "percent",
+     "discount_value": 10,
+     "min_order_amount": 100000,
+     "max_uses_per_user": 1
+   }
+   ```
+3. Quan sát phản hồi API từ Backend.
 
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-Backend cháº¥p nháº­n vÃ  lÆ°u mÃ£ giáº£m giÃ¡ 150% vÃ o CSDL SQLite vá»›i mÃ£ pháº£n há»“i HTTP 200 OK.
+#### 3. Kết quả mong đợi (Expected Result)
+Hệ thống phải kiểm tra hoặc bắt lỗi vi phạm ràng buộc UNIQUE, trả về mã lỗi client hợp lệ **HTTP 400 Bad Request** hoặc **HTTP 409 Conflict** kèm thông báo thân thiện:
 
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool C/EXE-10_Bug_BVA_Percent_Over100_Accepted.png](../screenshots/pool%20C/EXE-10_Bug_BVA_Percent_Over100_Accepted.png)
+#### 4. Kết quả thực tế (Actual Result)
+
+
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-07_Bug_Duplicate_Code_500_Error.png`](../screenshots/pool%20C/EXE-07_Bug_Duplicate_Code_500_Error.png)
+
+![EXE-07_Bug_Duplicate_Code_500_Error.png](../screenshots/pool%20C/EXE-07_Bug_Duplicate_Code_500_Error.png)
 
 ---
 
-### ðŸ› BUG #5: BUG-FR17-05 (Low/Medium - RESTful API Standards)
+### ⚠️ BUG #3: BUG-FR17-03 (HIGH - MISSING BOUNDARY & INPUT VALIDATION FOR NUMERIC FIELDS)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-17][MEDIUM] XÃ³a mÃ£ giáº£m giÃ¡ vá»›i ID khÃ´ng tá»“n táº¡i tráº£ vá» HTTP 200 OK thay vÃ¬ 404 Not Found`
-* **NhÃ£n (Labels):** `bug`, `medium`, `FR-17`, `api-standards`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** Low / Medium
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** Low
+* **Tiêu đề Issue:** `[FR-17][HIGH] Backend không kiểm tra ràng buộc số dương cho discount_value, min_order_amount và max_uses_per_user`
+* **Nhãn (Labels):** ``bug`, `high`, `backend`, `FR-17`, `data-validation``
+* **Mức độ nghiêm trọng (Severity):** High (Lỗi tính toàn vẹn dữ liệu và vi phạm phân tích biên)
+* **Mức độ ưu tiên (Priority):** High
+* **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
 
-#### 1. MÃ´ táº£ lá»—i
-Khi thá»±c hiá»‡n xÃ³a má»™t tÃ i nguyÃªn khÃ´ng tá»“n táº¡i thÃ´ng qua phÆ°Æ¡ng thá»©c HTTP DELETE, chuáº©n thiáº¿t káº¿ RESTful API yÃªu cáº§u há»‡ thá»‘ng pháº£i kiá»ƒm tra xem báº£n ghi cÃ³ bá»‹ áº£nh hÆ°á»Ÿng hay khÃ´ng (`this.changes > 0`). Náº¿u khÃ´ng tÃ¬m tháº¥y, há»‡ thá»‘ng pháº£i tráº£ vá» mÃ£ lá»—i `404 Not Found`.
-Táº¡i `backend/server.js` (dÃ²ng 483-490):
-```javascript
-db.run("DELETE FROM coupons WHERE id = ?", [id], function (err) {
-  if (err) return res.status(500).json({ error: err.message });
-  res.json({ message: "Coupon deleted" });
-});
-```
-HÃ m callback hoÃ n toÃ n khÃ´ng kiá»ƒm tra `this.changes`. Do Ä‘Ã³ dÃ¹ `id = 99999` khÃ´ng há» tá»“n táº¡i trong CSDL, API váº«n bÃ¡o xÃ³a thÃ nh cÃ´ng vá»›i HTTP 200 OK.
+#### 1. Mô tả lỗi
+Theo đặc tả nghiệp vụ FR-17:
+- `discount_value`: Phải là số dương $> 0$ (mã giảm giá không thể giảm 0 ₫ hoặc giảm số tiền âm).
+- `min_order_amount`: Phải là số không âm $\ge 0$ (không thể có đơn hàng tối thiểu âm).
+- `max_uses_per_user`: Phải là số nguyên dương $\ge 1$ (mã phải dùng được ít nhất 1 lần).
 
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. Gá»­i request `DELETE /api/admin/coupons/99999` vá»›i Header Admin JWT.
-2. Quan sÃ¡t HTTP Status Code vÃ  Response Body.
+Tuy nhiên, Backend `server.js` nhận toàn bộ dữ liệu từ body mà không có bất kỳ lệnh kiểm tra điều kiện nào:
+1. Cho phép tạo mã giảm giá với `discount_value = 0` (EXE-08).
+2. Cho phép tạo mã giảm giá với `discount_value = -50000` (EXE-09).
+3. Cho phép tạo mã giảm giá với `min_order_amount = -10000` (EXE-11).
+4. Cho phép tạo mã giảm giá với `max_uses_per_user = 0` (EXE-12). Nghiêm trọng hơn, khi tải lại trang Web Admin (F5), giao diện lại tự động hiển thị số `1`, dẫn đến sự bất nhất tai hại giữa dữ liệu thực trong CSDL (lưu 0) và giao diện hiển thị cho Quản trị viên (hiển thị 1).
 
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Há»‡ thá»‘ng pháº£i kiá»ƒm tra sá»‘ dÃ²ng bá»‹ áº£nh hÆ°á»Ÿng vÃ  tráº£ vá» **HTTP 404 Not Found** kÃ¨m thÃ´ng bÃ¡o: `Coupon not found`.
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Dùng tài khoản Admin gọi API `POST /api/admin/coupons` với payload chứa giá trị biên vi phạm:
+   - Case 1: `discount_value: 0`
+   - Case 2: `discount_value: -50000`
+   - Case 3: `min_order_amount: -10000`
+   - Case 4: `max_uses_per_user: 0`
+2. Quan sát phản hồi API và kiểm tra dữ liệu trong bảng `coupons` của SQLite.
+3. Đối với Case 4, mở Web Admin xem danh sách coupon và nhấn F5 để kiểm tra hiển thị.
 
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-API tráº£ vá» **HTTP 200 OK** kÃ¨m thÃ´ng bÃ¡o: `{"message": "Coupon deleted"}`.
+#### 3. Kết quả mong đợi (Expected Result)
+Backend phải validate dữ liệu và từ chối các giá trị không hợp lệ với mã lỗi **HTTP 400 Bad Request**:
+- `discount_value` phải là số dương $> 0$.
+- `min_order_amount` phải là số nguyên $\ge 0$.
+- `max_uses_per_user` phải là số nguyên $\ge 1$.
 
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool C/EXE-13_Bug_Delete_NonExistent_ID_200OK.png](../screenshots/pool%20C/EXE-13_Bug_Delete_NonExistent_ID_200OK.png)
+#### 4. Kết quả thực tế (Actual Result)
+Tất cả các request trên đều được Backend chấp nhận với **HTTP 200 OK** và lưu thẳng vào SQLite. Tại Web Admin, mã có `max_uses_per_user = 0` bị render thành `1`.
 
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-08_Bug_BVA_DiscountValue_Zero_Accepted.png`](../screenshots/pool%20C/EXE-08_Bug_BVA_DiscountValue_Zero_Accepted.png)
+
+![EXE-08_Bug_BVA_DiscountValue_Zero_Accepted.png](../screenshots/pool%20C/EXE-08_Bug_BVA_DiscountValue_Zero_Accepted.png)
+
+* **Ảnh minh chứng:** [`EXE-09_Bug_Negative_DiscountValue_Accepted.png`](../screenshots/pool%20C/EXE-09_Bug_Negative_DiscountValue_Accepted.png)
+
+![EXE-09_Bug_Negative_DiscountValue_Accepted.png](../screenshots/pool%20C/EXE-09_Bug_Negative_DiscountValue_Accepted.png)
+
+* **Ảnh minh chứng:** [`EXE-11_Bug_BVA_MinOrderAmount_Negative_Accepted.png`](../screenshots/pool%20C/EXE-11_Bug_BVA_MinOrderAmount_Negative_Accepted.png)
+
+![EXE-11_Bug_BVA_MinOrderAmount_Negative_Accepted.png](../screenshots/pool%20C/EXE-11_Bug_BVA_MinOrderAmount_Negative_Accepted.png)
+
+* **Ảnh minh chứng:** [`EXE-12_Bug_BVA_MaxUses_Zero_Accepted.png`](../screenshots/pool%20C/EXE-12_Bug_BVA_MaxUses_Zero_Accepted.png)
+
+![EXE-12_Bug_BVA_MaxUses_Zero_Accepted.png](../screenshots/pool%20C/EXE-12_Bug_BVA_MaxUses_Zero_Accepted.png)
+
+#### 6. Đề xuất khắc phục (Suggested Fix)
+Thêm kiểm tra tính hợp lệ trước khi thực hiện câu lệnh Insert:
+
+---
+
+### ⚠️ BUG #4: BUG-FR17-04 (HIGH - PERCENT DISCOUNT EXCEEDS 100%)
+
+* **Tiêu đề Issue:** `[FR-17][HIGH] Cho phép tạo mã giảm giá theo phần trăm vượt quá 100% (discount_value = 150%)`
+* **Nhãn (Labels):** ``bug`, `high`, `backend`, `FR-17`, `business-logic``
+* **Mức độ nghiêm trọng (Severity):** High (Lỗi quy tắc nghiệp vụ tài chính)
+* **Mức độ ưu tiên (Priority):** High
+* **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
+
+#### 1. Mô tả lỗi
+Theo nguyên lý thương mại điện tử và đặc tả FR-17:
+> *"Đối với loại mã giảm giá theo phần trăm (discount_type = 'percent'), mức giảm giá hợp lệ phải nằm trong đoạn [1..100]%."*
+
+Mức giảm phần trăm vượt quá 100% (ví dụ: 150%) sẽ dẫn tới việc số tiền giảm giá lớn hơn toàn bộ giá trị đơn hàng, làm tổng tiền thanh toán bị âm nếu hệ thống không có lớp chặn phụ trợ.
+Tuy nhiên, Backend `POST /api/admin/coupons` hoàn toàn không kiểm tra giới hạn trên (Max Boundary = 100) khi `discount_type === 'percent'`.
+
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Gửi request tạo coupon loại phần trăm với giá trị 150%:
+   ```json
+   {
+     "code": "OVER100",
+     "discount_type": "percent",
+     "discount_value": 150,
+     "min_order_amount": 100000,
+     "max_uses_per_user": 1
+   }
+   ```
+2. Quan sát kết quả phản hồi của API.
+
+#### 3. Kết quả mong đợi (Expected Result)
+Hệ thống phải từ chối yêu cầu với mã lỗi **HTTP 400 Bad Request** kèm thông báo lỗi:
+
+#### 4. Kết quả thực tế (Actual Result)
+
+
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-10_Bug_BVA_Percent_Over100_Accepted.png`](../screenshots/pool%20C/EXE-10_Bug_BVA_Percent_Over100_Accepted.png)
+
+![EXE-10_Bug_BVA_Percent_Over100_Accepted.png](../screenshots/pool%20C/EXE-10_Bug_BVA_Percent_Over100_Accepted.png)
+
+---
+
+### ℹ️ BUG #5: BUG-FR17-05 (MEDIUM - REST API NON-EXISTENT COUPON DELETION RETURNS 200 OK)
+
+* **Tiêu đề Issue:** `[FR-17][MEDIUM] Xóa mã giảm giá với ID không tồn tại trả về HTTP 200 OK thay vì HTTP 404 Not Found`
+* **Nhãn (Labels):** ``bug`, `medium`, `backend`, `FR-17`, `restful-api``
+* **Mức độ nghiêm trọng (Severity):** Medium (Vi phạm chuẩn thiết kế RESTful API)
+* **Mức độ ưu tiên (Priority):** Medium
+* **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
+
+#### 1. Mô tả lỗi
+Khi thực hiện xóa một tài nguyên không tồn tại thông qua phương thức `DELETE /api/admin/coupons/:id`, chuẩn RESTful API quy định hệ thống phải phản hồi mã **HTTP 404 Not Found** để thông báo cho phía client biết tài nguyên cần thao tác không có trong hệ thống.
+
+Tuy nhiên, tại `backend/server.js` dòng 483-490:
+
+#### 2. Các bước tái hiện (Steps to Reproduce)
+
+
+#### 3. Kết quả mong đợi (Expected Result)
+
+
+#### 4. Kết quả thực tế (Actual Result)
+
+
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-13_Bug_Delete_NonExistent_ID_200OK.png`](../screenshots/pool%20C/EXE-13_Bug_Delete_NonExistent_ID_200OK.png)
+
+![EXE-13_Bug_Delete_NonExistent_ID_200OK.png](../screenshots/pool%20C/EXE-13_Bug_Delete_NonExistent_ID_200OK.png)
+
+---

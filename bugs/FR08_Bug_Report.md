@@ -1,228 +1,240 @@
-﻿# BÃO CÃO CHI TIáº¾T DANH SÃCH Lá»–I (BUG REPORT)
-## TÃNH NÄ‚NG FR-08: THANH TOÃN (CHECKOUT) (POOL B)
+# BÁO CÁO CHI TIẾT DANH SÁCH LỖI (BUG REPORT)
+## TÍNH NĂNG FR-08: THANH TOÁN (CHECKOUT) (POOL B)
 
-* **MÃ£ sinh viÃªn:** 23120127
-* **Há» vÃ  tÃªn:** DÆ°Æ¡ng Trá»ng HÃ²a
-* **Há»‡ thá»‘ng Ä‘Æ°á»£c kiá»ƒm thá»­ (SUT):** EShop Platform (`http://localhost:5173` / Backend API `http://localhost:3000`)
-* **Tá»•ng sá»‘ lá»—i phÃ¡t hiá»‡n:** 7 lá»—i (1 Critical, 4 High, 2 Medium)
-* **NgÃ y láº­p bÃ¡o cÃ¡o:** 2026-10-18
-
----
-
-## DANH SÃCH CHI TIáº¾T CÃC Lá»–I ÄÃƒ PHÃT HIá»†N
+* **Mã sinh viên:** 23120127
+* **Họ và tên:** Dương Trọng Hòa
+* **Hệ thống được kiểm thử (SUT):** EShop Platform (`http://localhost:5173` / Backend API `http://localhost:3000`)
+* **Tổng số lỗi phát hiện:** 7 lỗi (1 Critical, 4 High, 2 Medium)
+* **Ngày lập báo cáo:** 2026-10-18
 
 ---
 
-### ðŸš¨ BUG #1: BUG-FR08-01 (CRITICAL - SECURITY / PRICE TAMPERING)
-
-* **TiÃªu Ä‘á» Issue:** `[FR-08][SEC-02][CRITICAL] Lá»— há»•ng Gian láº­n giÃ¡ (Price Tampering) cho phÃ©p sá»­a tá»•ng tiá»n thanh toÃ¡n qua UI vÃ  API`
-* **NhÃ£n (Labels):** `bug`, `critical`, `security`, `FR-08`, `business-logic`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** Critical (NghiÃªm trá»ng nháº¥t - Tháº¥t thoÃ¡t tÃ i chÃ­nh)
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** Urgent / Immediate
-* **MÃ´i trÆ°á»ng:** Chrome / Windows / EShop Local (Frontend: React, Backend: Node.js, CSDL: SQLite)
-
-#### 1. MÃ´ táº£ lá»—i
-Äáº·c táº£ FR-08 quy Ä‘á»‹nh rÃµ rÃ ng:
-> *"Tá»•ng tiá»n thanh toÃ¡n Ä‘Æ°á»£c tÃ­nh tá»± Ä‘á»™ng tá»« giá» hÃ ng vÃ  khÃ´ng cho phÃ©p ngÆ°á»i dÃ¹ng chá»‰nh sá»­a trá»±c tiáº¿p."*
-> *"Backend pháº£i tá»± tÃ­nh láº¡i tá»•ng tiá»n; khÃ´ng cháº¥p nháº­n giÃ¡ trá»‹ total_amount do client gá»­i lÃªn."*
-
-Tuy nhiÃªn trÃªn thá»±c táº¿:
-1. **Táº¡i Frontend (`frontend-web/src/pages/Checkout.jsx` dÃ²ng 93-102):** Ã” Tá»•ng tiá»n thanh toÃ¡n lÃ  má»™t tháº» `<input type="number">` cho phÃ©p ngÆ°á»i dÃ¹ng tá»± do click vÃ o chá»‰nh sá»­a sá»‘ tiá»n tÃ¹y Ã½.
-2. **Táº¡i Backend (`backend/server.js` dÃ²ng 299-304):** API `POST /api/checkout` nháº­n trá»±c tiáº¿p tham sá»‘ `total_amount` tá»« request body cá»§a client vÃ  lÆ°u tháº³ng vÃ o báº£ng `orders` trong CSDL SQLite mÃ  khÃ´ng há» tá»± tÃ­nh láº¡i tá»•ng tiá»n tá»« giá» hÃ ng.
-
-Háº­u quáº£: Káº» gian cÃ³ thá»ƒ mua Ä‘Æ¡n hÃ ng 2 sáº£n pháº©m cao cáº¥p trá»‹ giÃ¡ **36.000.000 â‚«** nhÆ°ng chá»‰ cáº§n thanh toÃ¡n vá»›i sá»‘ tiá»n **1.000 â‚«** (hoáº·c 0 â‚«) vÃ  há»‡ thá»‘ng váº«n cháº¥p nháº­n táº¡o Ä‘Æ¡n hÃ ng thÃ nh cÃ´ng!
-
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. ÄÄƒng nháº­p vÃ o há»‡ thá»‘ng vá»›i tÃ i khoáº£n `test@eshop.com` / `Test1234!`.
-2. ThÃªm vÃ o giá» hÃ ng: **iPhone 15 Pro Max** (30.000.000 â‚«) vÃ  **Tai nghe AirPods Pro 2** (6.000.000 â‚«). Tá»•ng tiá»n thá»±c táº¿: 36.000.000 â‚«.
-3. Äiá»u hÆ°á»›ng tá»›i trang Checkout (`http://localhost:5173/checkout`).
-4. Táº¡i Ã´ "Tá»•ng tiá»n thanh toÃ¡n (VND)", xÃ³a sá»‘ tiá»n 36.000.000 â‚« Ä‘i vÃ  nháº­p `1000`.
-5. Nháº¥n nÃºt **"XÃ¡c Nháº­n Thanh ToÃ¡n"**.
-6. Kiá»ƒm tra CSDL SQLite báº£ng `orders`.
-
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-- Giao diá»‡n pháº£i khÃ³a trÆ°á»ng Tá»•ng tiá»n (Read-only / Text).
-- Backend pháº£i tá»± tÃ­nh láº¡i tá»•ng tiá»n tá»« báº£ng `products` trong CSDL ($36,000,000\text{ â‚«}$) vÃ  tá»« chá»‘i giÃ¡ trá»‹ 1.000 â‚« do client gá»­i lÃªn.
-
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-ÄÆ¡n hÃ ng Ä‘Æ°á»£c lÆ°u thÃ nh cÃ´ng vÃ o CSDL SQLite vá»›i `total_amount = 1000 â‚«`.
-
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool B/EXE-12_Bug_Critical_Price_Tampering.png](../screenshots/pool%20B/EXE-12_Bug_Critical_Price_Tampering.png)
-* Minh chá»©ng Ã´ input cho sá»­a giÃ¡: [screenshots/pool B/EXE-01_GUI_TotalAmount_And_H1_Check.png](../screenshots/pool%20B/EXE-01_GUI_TotalAmount_And_H1_Check.png)
+## DANH SÁCH CHI TIẾT CÁC LỖI ĐÃ PHÁT HIỆN
 
 ---
 
-### ðŸ› BUG #2: BUG-FR08-02 (High - State Transition / Data Integrity)
+### 🚨 BUG #1: BUG-FR08-01 (CRITICAL - SECURITY / PRICE TAMPERING)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-08][HIGH] Giá» hÃ ng khÃ´ng Ä‘Æ°á»£c lÃ m trá»‘ng sau khi ngÆ°á»i dÃ¹ng hoÃ n táº¥t thanh toÃ¡n thÃ nh cÃ´ng`
-* **NhÃ£n (Labels):** `bug`, `high`, `FR-08`, `state-transition`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** High
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** High
+* **Tiêu đề Issue:** `[FR-08][SEC-02][CRITICAL] Lỗ hổng Gian lận giá (Price Tampering) cho phép sửa tổng tiền thanh toán qua UI và API`
+* **Nhãn (Labels):** ``bug`, `critical`, `security`, `FR-08`, `business-logic``
+* **Mức độ nghiêm trọng (Severity):** Critical (Nghiêm trọng nhất - Lỗ hổng tài chính)
+* **Mức độ ưu tiên (Priority):** Urgent / Immediate
+* **Môi trường:** Chrome / Windows / EShop Local (Frontend: React, Backend: Node.js, CSDL: SQLite)
 
-#### 1. MÃ´ táº£ lá»—i
-Theo Ä‘áº·c táº£ nghiá»‡p vá»¥ FR-08: *"Sau thanh toÃ¡n thÃ nh cÃ´ng, giá» hÃ ng Ä‘Æ°á»£c xÃ³a"*.
-Tuy nhiÃªn, sau khi ngÆ°á»i dÃ¹ng hoÃ n táº¥t Ä‘áº·t hÃ ng thÃ nh cÃ´ng, giá» hÃ ng cá»§a ngÆ°á»i dÃ¹ng váº«n giá»¯ nguyÃªn toÃ n bá»™ cÃ¡c sáº£n pháº©m vá»«a mua. Khi ngÆ°á»i dÃ¹ng quay láº¡i trang giá» hÃ ng hoáº·c tiáº¿p tá»¥c mua sáº¯m, cÃ¡c sáº£n pháº©m nÃ y váº«n cÃ²n trong giá», dáº«n tá»›i nguy cÆ¡ Ä‘áº·t hÃ ng trÃ¹ng láº·p ngoÃ i Ã½ muá»‘n.
+#### 1. Mô tả lỗi
+Đặc tả FR-08 quy định rõ ràng:
+> *"Tổng tiền thanh toán được tính tự động từ giỏ hàng và không cho phép người dùng chỉnh sửa trực tiếp."*
+> *"Backend phải tự tính lại tổng tiền; không chấp nhận giá trị total_amount do client gửi lên."*
 
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. ThÃªm 2 sáº£n pháº©m vÃ o giá» hÃ ng (`/cart`).
-2. Tiáº¿n hÃ nh Checkout táº¡i `/checkout` vÃ  nháº¥n **XÃ¡c Nháº­n Thanh ToÃ¡n**.
-3. Há»‡ thá»‘ng hiá»ƒn thá»‹ thÃ´ng bÃ¡o "Äáº·t hÃ ng thÃ nh cÃ´ng!".
-4. Quay láº¡i trang Giá» hÃ ng (`http://localhost:5173/cart`).
+Tuy nhiên trên thực tế:
+1. **Tại Frontend (`frontend-web/src/pages/Checkout.jsx` dòng 93-102):** Ô Tổng tiền thanh toán là một thẻ `<input type="number">` cho phép người dùng tự do click vào chỉnh sửa số tiền tùy ý.
+2. **Tại Backend (`backend/server.js` dòng 299-304):** API `POST /api/checkout` nhận trực tiếp tham số `total_amount` từ request body của client và lưu thẳng vào bảng `orders` trong CSDL SQLite mà không hề tự tính lại tổng tiền từ giỏ hàng.
 
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Giá» hÃ ng pháº£i Ä‘Æ°á»£c lÃ m trá»‘ng (`items = []`), hiá»ƒn thá»‹ tráº¡ng thÃ¡i "Giá» hÃ ng cá»§a báº¡n Ä‘ang trá»‘ng".
+Hậu quả: Kẻ gian có thể mua đơn hàng 2 sản phẩm cao cấp trị giá **36.000.000 ₫** nhưng chỉ cần thanh toán với số tiền **1.000 ₫** (hoặc 0 ₫) và hệ thống vẫn chấp nhận tạo đơn hàng thành công!
 
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-Giá» hÃ ng váº«n giá»¯ nguyÃªn 2 sáº£n pháº©m ban Ä‘áº§u kÃ¨m tá»•ng tiá»n 36.000.000 â‚«.
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Đăng nhập vào hệ thống với tài khoản `test@eshop.com` / `Test1234!`.
+2. Thêm vào giỏ hàng: **iPhone 15 Pro Max** (30.000.000 ₫) và **Tai nghe AirPods Pro 2** (6.000.000 ₫). Tổng tiền thực tế: 36.000.000 ₫.
+3. Điều hướng tới trang Checkout (`http://localhost:5173/checkout`).
+4. Tại ô "Tổng tiền thanh toán (VND)", xóa số tiền 36.000.000 ₫ đi và nhập `1000`.
+5. Nhấn nút **"Xác Nhận Thanh Toán"**.
+6. Kiểm tra CSDL SQLite bảng `orders`.
 
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool B/EXE-05_Bug_Cart_Not_Cleared_After_Checkout.png](../screenshots/pool%20B/EXE-05_Bug_Cart_Not_Cleared_After_Checkout.png)
+#### 3. Kết quả mong đợi (Expected Result)
+- Ô tổng tiền trên giao diện phải bị vô hiệu hóa (disabled / read-only).
+- Backend bắt buộc phải tự tính lại tổng tiền từ các sản phẩm trong CSDL; nếu phát hiện giá trị gửi lên không khớp phải từ chối ngay (HTTP 400 Bad Request).
 
----
+#### 4. Kết quả thực tế (Actual Result)
+Giao diện cho phép nhập số tùy ý. Backend tạo đơn hàng thành công (HTTP 200) và CSDL SQLite ghi nhận đơn hàng với `total_amount = 1000 ₫`.
 
-### ðŸ› BUG #3: BUG-FR08-03 (High - Missing Mandatory Field & Validation)
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-12_Bug_Critical_Price_Tampering.png`](../screenshots/pool%20B/EXE-12_Bug_Critical_Price_Tampering.png)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-08][FR-22][HIGH] Giao diá»‡n Checkout thiáº¿u hoÃ n toÃ n Ã´ nháº­p Äá»‹a chá»‰ giao hÃ ng vÃ  Backend cho phÃ©p lÆ°u Ä‘Æ¡n hÃ ng khÃ´ng Ä‘á»‹a chá»‰`
-* **NhÃ£n (Labels):** `bug`, `high`, `FR-08`, `FR-22`, `validation`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** High
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** High
-
-#### 1. MÃ´ táº£ lá»—i
-Äá»‹a chá»‰ giao hÃ ng lÃ  trÆ°á»ng thÃ´ng tin báº¯t buá»™c Ä‘á»‘i vá»›i Ä‘Æ¡n hÃ ng thÆ°Æ¡ng máº¡i Ä‘iá»‡n tá»­ (cÃ³ dáº¥u `*` Ä‘á» theo FR-22).
-Tuy nhiÃªn, trang Checkout khÃ´ng há» cÃ³ Ã´ nháº­p trÆ°á»ng "Äá»‹a chá»‰ giao hÃ ng", cÅ©ng khÃ´ng káº¿ thá»«a Ä‘á»‹a chá»‰ máº·c Ä‘á»‹nh tá»« há»“ sÆ¡ cÃ¡ nhÃ¢n. Äá»“ng thá»i API `POST /api/checkout` cho phÃ©p lÆ°u Ä‘Æ¡n hÃ ng cÃ³ Ä‘á»‹a chá»‰ rá»—ng vÃ o báº£ng `orders`.
-
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. Truy cáº­p trang Checkout `http://localhost:5173/checkout`.
-2. Quan sÃ¡t toÃ n bá»™ form Ä‘áº·t hÃ ng: KhÃ´ng cÃ³ trÆ°á»ng Äá»‹a chá»‰ nháº­n hÃ ng.
-3. Gá»­i request `POST /api/checkout` vá»›i `shipping_address: ""`.
-
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-- Form Checkout pháº£i cÃ³ Ã´ nháº­p Äá»‹a chá»‰ giao hÃ ng vá»›i nhÃ£n cÃ³ dáº¥u `*` Ä‘á».
-- Backend pháº£i tá»« chá»‘i (HTTP 400 Bad Request) náº¿u Ä‘á»‹a chá»‰ giao hÃ ng bá»‹ Ä‘á»ƒ trá»‘ng.
-
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-KhÃ´ng cÃ³ trÆ°á»ng Ä‘á»‹a chá»‰ trÃªn UI; Backend cháº¥p nháº­n táº¡o Ä‘Æ¡n hÃ ng vá»›i Ä‘á»‹a chá»‰ rá»—ng.
-
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool B/EXE-03_Error_Missing_Shipping_Address_Field.png](../screenshots/pool%20B/EXE-03_Error_Missing_Shipping_Address_Field.png)
-* Minh chá»©ng lÆ°u Ä‘Æ¡n hÃ ng rá»—ng Ä‘á»‹a chá»‰: [screenshots/pool B/EXE-09_Bug_BVA_Empty_Address_Accepted.png](../screenshots/pool%20B/EXE-09_Bug_BVA_Empty_Address_Accepted.png)
+![EXE-12_Bug_Critical_Price_Tampering.png](../screenshots/pool%20B/EXE-12_Bug_Critical_Price_Tampering.png)
 
 ---
 
-### ðŸ› BUG #4: BUG-FR08-04 (Medium - GUI Standard FR-21)
+### 🐛 BUG #2: BUG-FR08-02 (High - State Transition / Data Integrity)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-08][FR-21][MEDIUM] Trang Checkout khÃ´ng cÃ³ tháº» <h1> nÃ o, vi pháº¡m quy chuáº©n giao diá»‡n chung`
-* **NhÃ£n (Labels):** `bug`, `medium`, `FR-08`, `FR-21`, `gui-standards`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** Medium
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** Medium
+* **Tiêu đề Issue:** `[FR-08][BUG] Giỏ hàng không được xóa sạch sau khi thanh toán thành công`
+* **Nhãn (Labels):** ``bug`, `high`, `FR-08`, `data-integrity``
+* **Mức độ nghiêm trọng (Severity):** High
+* **Mức độ ưu tiên (Priority):** High
+* **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
 
-#### 1. MÃ´ táº£ lá»—i
-Quy chuáº©n giao diá»‡n chung FR-21 quy Ä‘á»‹nh rÃµ: *"Má»—i trang cÃ³ Ä‘Ãºng 1 tháº» <h1> duy nháº¥t"*.
-TrÃªn trang Checkout, tiÃªu Ä‘á» trang Ä‘ang Ä‘Æ°á»£c Ä‘á»‹nh dáº¡ng báº±ng tháº» `<h2>Thanh ToÃ¡n</h2>` thay vÃ¬ tháº» `<h1>`. Kiá»ƒm tra báº±ng lá»‡nh JavaScript `document.querySelectorAll('h1').length` tráº£ vá» káº¿t quáº£ báº±ng **`0`**.
+#### 1. Mô tả lỗi
+Đặc tả FR-08 quy định quy tắc hậu điều kiện (Post-condition):
+> *"Sau thanh toán thành công, giỏ hàng được xóa."*
 
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. Má»Ÿ trang `http://localhost:5173/checkout`.
-2. Nháº¥n `F12` má»Ÿ Console trÃ¬nh duyá»‡t.
-3. Cháº¡y lá»‡nh: `document.querySelectorAll('h1').length`.
+Tuy nhiên, sau khi người dùng hoàn tất thanh toán và nhận thông báo thành công, giỏ hàng của người dùng vẫn giữ nguyên các sản phẩm cũ. Khi người dùng quay lại trang chủ hoặc vào trang Cart, các mặt hàng đã mua vẫn hiển thị trong giỏ, gây trải nghiệm tệ và nguy cơ người dùng đặt trùng đơn hàng.
 
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Káº¿t quáº£ tráº£ vá» Ä‘Ãºng `1` tháº» `<h1>`.
+Nguyên nhân mã nguồn:
+- Trong `frontend-web/src/pages/Checkout.jsx` dòng 61, hàm `handleCheckout` chỉ gọi `setSuccess(true)` mà bỏ quên việc gọi hàm `clearCart()`.
+- Trong `backend/server.js` dòng 297-309, API `POST /api/checkout` không xóa mảng `userCarts[userId]`.
 
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-Káº¿t quáº£ tráº£ vá» `0` (khÃ´ng cÃ³ tháº» `<h1>` nÃ o).
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Thêm sản phẩm vào giỏ hàng và tiến hành thanh toán thành công tại `http://localhost:5173/checkout`.
+2. Màn hình hiển thị "Thanh toán thành công!".
+3. Nhấp vào nút "Quay lại trang chủ" hoặc truy cập đường dẫn `http://localhost:5173/cart`.
+4. Quan sát số lượng và danh sách sản phẩm trong giỏ hàng.
 
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool B/EXE-01_GUI_TotalAmount_And_H1_Check.png](../screenshots/pool%20B/EXE-01_GUI_TotalAmount_And_H1_Check.png)
+#### 3. Kết quả mong đợi (Expected Result)
+Giỏ hàng phải được làm trống (`cart.length = 0`), hiển thị thông báo "Giỏ hàng của bạn đang trống".
 
----
+#### 4. Kết quả thực tế (Actual Result)
+Giỏ hàng vẫn còn nguyên các sản phẩm vừa mua và số lượng không thay đổi.
 
-### ðŸ› BUG #5: BUG-FR08-05 (High - Business Logic / Cart Integrity)
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-05_Bug_Cart_Not_Cleared_After_Checkout.png`](../screenshots/pool%20B/EXE-05_Bug_Cart_Not_Cleared_After_Checkout.png)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-08][HIGH] Há»‡ thá»‘ng cho phÃ©p thanh toÃ¡n vÃ  táº¡o Ä‘Æ¡n hÃ ng khi giá» hÃ ng hoÃ n toÃ n trá»‘ng`
-* **NhÃ£n (Labels):** `bug`, `high`, `FR-08`, `business-logic`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** High
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** High
-
-#### 1. MÃ´ táº£ lá»—i
-Äáº·c táº£ nghiá»‡p vá»¥ FR-08 quy Ä‘á»‹nh thanh toÃ¡n chá»‰ Ã¡p dá»¥ng cho giá» hÃ ng cÃ³ tá»‘i thiá»ƒu 1 sáº£n pháº©m ($\text{length} \ge 1$).
-Khi gá»­i request API `POST /api/checkout` vá»›i danh sÃ¡ch sáº£n pháº©m rá»—ng (`items: []`) vÃ  `total_amount: 0`, Backend khÃ´ng kiá»ƒm tra dá»¯ liá»‡u giá» hÃ ng mÃ  tráº£ vá» HTTP 200 OK vÃ  táº¡o thÃ nh cÃ´ng má»™t Ä‘Æ¡n hÃ ng "ma" 0 Ä‘á»“ng trong CSDL SQLite.
-
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. Gá»­i request `POST /api/checkout` vá»›i Header JWT há»£p lá»‡ vÃ  body JSON:
-```json
-{
-  "items": [],
-  "shipping_address": "123 LÃª Lá»£i, Q1",
-  "total_amount": 0
-}
-```
-2. Kiá»ƒm tra pháº£n há»“i API vÃ  CSDL báº£ng `orders`.
-
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Há»‡ thá»‘ng tá»« chá»‘i yÃªu cáº§u vá»›i HTTP 400 Bad Request kÃ¨m thÃ´ng bÃ¡o lá»—i giá» hÃ ng rá»—ng.
-
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-API tráº£ vá» HTTP 200 OK vÃ  lÆ°u Ä‘Æ¡n hÃ ng rá»—ng vÃ o CSDL.
-
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool B/EXE-07_Bug_BVA_Empty_Cart_Accepted.png](../screenshots/pool%20B/EXE-07_Bug_BVA_Empty_Cart_Accepted.png)
+![EXE-05_Bug_Cart_Not_Cleared_After_Checkout.png](../screenshots/pool%20B/EXE-05_Bug_Cart_Not_Cleared_After_Checkout.png)
 
 ---
 
-### ðŸ› BUG #6: BUG-FR08-06 (High - Data Integrity)
+### 🐛 BUG #3: BUG-FR08-03 (High - Missing Mandatory Field & Validation)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-08][HIGH] Backend cháº¥p nháº­n táº¡o Ä‘Æ¡n hÃ ng vá»›i sá»‘ lÆ°á»£ng sáº£n pháº©m lÃ  sá»‘ nguyÃªn Ã¢m`
-* **NhÃ£n (Labels):** `bug`, `high`, `FR-08`, `data-integrity`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** High
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** High
+* **Tiêu đề Issue:** `[FR-08][FR-22][BUG] Form Checkout thiếu hoàn toàn trường Địa chỉ giao hàng và Backend chấp nhận lưu địa chỉ rỗng`
+* **Nhãn (Labels):** ``bug`, `high`, `FR-08`, `FR-22`, `validation``
+* **Mức độ nghiêm trọng (Severity):** High
+* **Mức độ ưu tiên (Priority):** High
+* **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
 
-#### 1. MÃ´ táº£ lá»—i
-Äáº·c táº£ nghiá»‡p vá»¥ quy Ä‘á»‹nh sá»‘ lÆ°á»£ng sáº£n pháº©m Ä‘áº·t mua báº¯t buá»™c pháº£i lÃ  sá»‘ nguyÃªn dÆ°Æ¡ng ($\ge 1$).
-Khi gá»­i request táº¡o Ä‘Æ¡n hÃ ng vá»›i sá»‘ lÆ°á»£ng Ã¢m (`quantity: -2`), Backend `server.js` khÃ´ng kiá»ƒm tra giÃ¡ trá»‹ sá»‘ lÆ°á»£ng mÃ  váº«n tiáº¿p nháº­n vÃ  táº¡o Ä‘Æ¡n hÃ ng thÃ nh cÃ´ng vÃ o CSDL.
+#### 1. Mô tả lỗi
+Địa chỉ giao hàng là thông tin bắt buộc thiết yếu để giao hàng. Theo FR-22: *"Tất cả các trường bắt buộc phải có dấu `*` bên cạnh nhãn"*.
+Tuy nhiên:
+1. Giao diện trang `Checkout.jsx` hoàn toàn không có trường nhập "Địa chỉ giao hàng", cũng không kế thừa và hiển thị địa chỉ mặc định từ hồ sơ người dùng (FR-04).
+2. Khi gọi API `POST /api/checkout`, Backend `server.js` không kiểm tra trường `shipping_address`, cho phép client gửi chuỗi rỗng `""` hoặc bỏ trống và lưu đơn hàng không có địa chỉ giao hàng vào CSDL.
 
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. Gá»­i request `POST /api/checkout` vá»›i body:
-```json
-{
-  "items": [{ "id": 1, "quantity": -2, "price": 30000000 }],
-  "shipping_address": "123 LÃª Lá»£i",
-  "total_amount": -60000000
-}
-```
-2. Quan sÃ¡t pháº£n há»“i API.
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Truy cập trang `http://localhost:5173/checkout`.
+2. Quan sát toàn bộ giao diện form đặt hàng $\rightarrow$ Không thấy ô nhập Địa chỉ giao hàng.
+3. Gửi request API `POST /api/checkout` với body: `{"items": [...], "total_amount": 36000000, "shipping_address": ""}`.
+4. Kiểm tra CSDL SQLite bảng `orders`.
 
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Há»‡ thá»‘ng tá»« chá»‘i (HTTP 400 Bad Request) yÃªu cáº§u sá»‘ lÆ°á»£ng pháº£i $\ge 1$.
+#### 3. Kết quả mong đợi (Expected Result)
+Giao diện phải có ô nhập Địa chỉ giao hàng (có dấu `*` đỏ). Nếu để trống, hệ thống phải chặn lại và hiển thị lỗi ở phía trên nút submit.
 
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-API tráº£ vá» HTTP 200 OK vÃ  lÆ°u Ä‘Æ¡n hÃ ng cÃ³ sá»‘ lÆ°á»£ng Ã¢m vÃ o CSDL.
+#### 4. Kết quả thực tế (Actual Result)
+Giao diện thiếu hoàn toàn ô nhập địa chỉ. Backend chấp nhận tạo đơn hàng thành công và lưu địa chỉ rỗng vào CSDL SQLite.
 
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool B/EXE-08_Bug_Negative_Quantity_Accepted.png](../screenshots/pool%20B/EXE-08_Bug_Negative_Quantity_Accepted.png)
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-03_Error_Missing_Shipping_Address_Field.png`](../screenshots/pool%20B/EXE-03_Error_Missing_Shipping_Address_Field.png)
+
+![EXE-03_Error_Missing_Shipping_Address_Field.png](../screenshots/pool%20B/EXE-03_Error_Missing_Shipping_Address_Field.png)
 
 ---
 
-### ðŸ› BUG #7: BUG-FR08-07 (Medium - Boundary Validation)
+### 🐛 BUG #4: BUG-FR08-04 (Medium - GUI Standard FR-21)
 
-* **TiÃªu Ä‘á» Issue:** `[FR-08][MEDIUM] KhÃ´ng kiá»ƒm soÃ¡t giá»›i háº¡n Ä‘á»™ dÃ i tá»‘i Ä‘a 255 kÃ½ tá»± cho Äá»‹a chá»‰ giao hÃ ng khi checkout`
-* **NhÃ£n (Labels):** `bug`, `medium`, `FR-08`, `boundary`
-* **Má»©c Ä‘á»™ nghiÃªm trá»ng (Severity):** Medium
-* **Má»©c Ä‘á»™ Æ°u tiÃªn (Priority):** Low/Medium
+* **Tiêu đề Issue:** `[FR-08][FR-21][BUG] Trang Checkout không có thẻ <h1> mô tả tiêu đề trang (đang dùng <h2>)`
+* **Nhãn (Labels):** ``bug`, `medium`, `FR-08`, `FR-21`, `gui``
+* **Mức độ nghiêm trọng (Severity):** Medium
+* **Mức độ ưu tiên (Priority):** Medium
+* **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
 
-#### 1. MÃ´ táº£ lá»—i
-Táº¡i ranh giá»›i kiá»ƒm thá»­ Max + 1 (256 kÃ½ tá»±), Backend API cho phÃ©p lÆ°u chuá»—i Ä‘á»‹a chá»‰ vÆ°á»£t quÃ¡ 255 kÃ½ tá»± vÃ o CSDL SQLite mÃ  khÃ´ng há» cÃ³ cÆ¡ cháº¿ validate hay cáº£nh bÃ¡o lá»—i.
+#### 1. Mô tả lỗi
+Quy chuẩn giao diện chung FR-21 quy định rõ ràng:
+> *"Tiêu đề trang: Mỗi trang có đúng 1 thẻ `<h1>` mô tả nội dung trang."*
 
-#### 2. CÃ¡c bÆ°á»›c tÃ¡i hiá»‡n (Steps to Reproduce)
-1. Gá»­i request `POST /api/checkout` vá»›i trÆ°á»ng `shipping_address` lÃ  chuá»—i 256 kÃ½ tá»±: `"A".repeat(256)`.
-2. Kiá»ƒm tra CSDL SQLite báº£ng `orders`.
+Tuy nhiên, tại file `frontend-web/src/pages/Checkout.jsx` dòng 80, tiêu đề "Xác Nhận Đơn Hàng" được lập trình bằng thẻ `<h2>`:
 
-#### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
-Há»‡ thá»‘ng tá»« chá»‘i (HTTP 400 Bad Request) hoáº·c giá»›i háº¡n Ä‘á»™ dÃ i khÃ´ng vÆ°á»£t quÃ¡ 255 kÃ½ tá»±.
+#### 2. Các bước tái hiện (Steps to Reproduce)
 
-#### 4. Káº¿t quáº£ thá»±c táº¿ (Actual Result)
-Request Ä‘Æ°á»£c cháº¥p nháº­n vÃ  lÆ°u chuá»—i 256 kÃ½ tá»± thÃ nh cÃ´ng vÃ o SQLite.
 
-#### 5. Báº±ng chá»©ng hÃ¬nh áº£nh (Screenshot)
-* **HÃ¬nh áº£nh báº±ng chá»©ng:** [screenshots/pool B/EXE-11_Bug_BVA_Address_256Chars_Accepted.png](../screenshots/pool%20B/EXE-11_Bug_BVA_Address_256Chars_Accepted.png)
+#### 3. Kết quả mong đợi (Expected Result)
 
+
+#### 4. Kết quả thực tế (Actual Result)
+
+
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-01_GUI_TotalAmount_And_H1_Check.png`](../screenshots/pool%20B/EXE-01_GUI_TotalAmount_And_H1_Check.png)
+
+![EXE-01_GUI_TotalAmount_And_H1_Check.png](../screenshots/pool%20B/EXE-01_GUI_TotalAmount_And_H1_Check.png)
+
+---
+
+### 🐛 BUG #5: BUG-FR08-05 (High - Business Logic / Empty Cart Checkout)
+
+* **Tiêu đề Issue:** `[FR-08][BUG] Hệ thống cho phép đặt hàng khi giỏ hàng hoàn toàn trống (items.length = 0) với tổng tiền 0 ₫`
+* **Nhãn (Labels):** ``bug`, `high`, `FR-08`, `boundary``
+* **Mức độ nghiêm trọng (Severity):** High
+* **Mức độ ưu tiên (Priority):** High
+* **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
+
+#### 1. Mô tả lỗi
+Tại ranh giới kiểm thử Min - 1 của giỏ hàng (`items.length = 0`), người dùng không thể thực hiện thanh toán nếu không có sản phẩm nào.
+Tuy nhiên, Backend tại `backend/server.js` không kiểm tra số lượng phần tử của mảng `items`, cho phép client gửi request checkout với mảng rỗng và `total_amount = 0`. Backend vẫn trả về HTTP 200 OK và tạo một đơn hàng rác 0 ₫ vào CSDL SQLite.
+
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Gửi request `POST /api/checkout` với payload:
+
+#### 3. Kết quả mong đợi (Expected Result)
+
+
+#### 4. Kết quả thực tế (Actual Result)
+
+
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-07_Bug_BVA_Empty_Cart_Accepted.png`](../screenshots/pool%20B/EXE-07_Bug_BVA_Empty_Cart_Accepted.png)
+
+![EXE-07_Bug_BVA_Empty_Cart_Accepted.png](../screenshots/pool%20B/EXE-07_Bug_BVA_Empty_Cart_Accepted.png)
+
+---
+
+### 🐛 BUG #6: BUG-FR08-06 (High - Data Integrity / Negative Quantity Accepted)
+
+* **Tiêu đề Issue:** `[FR-08][BUG] Backend chấp nhận tạo đơn hàng với sản phẩm có số lượng âm (quantity = -2)`
+* **Nhãn (Labels):** ``bug`, `high`, `FR-08`, `data-integrity``
+* **Mức độ nghiêm trọng (Severity):** High
+* **Mức độ ưu tiên (Priority):** High
+* **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
+
+#### 1. Mô tả lỗi
+Đặc tả nghiệp vụ quy định số lượng sản phẩm đặt mua bắt buộc phải là số nguyên dương ($\ge 1$).
+Backend API `POST /api/checkout` hoàn toàn bỏ qua việc xác thực thuộc tính `quantity` của từng mặt hàng, chấp nhận đơn hàng có `quantity = -2` và trả về kết quả thành công, gây sai lệch nghiêm trọng dữ liệu tồn kho và kế toán.
+
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Gửi request `POST /api/checkout` với item có số lượng âm:
+
+#### 3. Kết quả mong đợi (Expected Result)
+
+
+#### 4. Kết quả thực tế (Actual Result)
+
+
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-08_Bug_Negative_Quantity_Accepted.png`](../screenshots/pool%20B/EXE-08_Bug_Negative_Quantity_Accepted.png)
+
+![EXE-08_Bug_Negative_Quantity_Accepted.png](../screenshots/pool%20B/EXE-08_Bug_Negative_Quantity_Accepted.png)
+
+---
+
+### 🐛 BUG #7: BUG-FR08-07 (Medium - Boundary Validation / Address > 255 Chars)
+
+* **Tiêu đề Issue:** `[FR-08][BUG] Không giới hạn độ dài tối đa 255 ký tự cho trường Địa chỉ giao hàng`
+* **Nhãn (Labels):** ``bug`, `medium`, `FR-08`, `boundary``
+* **Mức độ nghiêm trọng (Severity):** Medium
+* **Mức độ ưu tiên (Priority):** Medium
+* **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
+
+#### 1. Mô tả lỗi
+Tại ranh giới kiểm thử Max + 1 (256 ký tự), hệ thống không có cơ chế chặn giới hạn độ dài chuỗi địa chỉ giao hàng. CSDL SQLite lưu trữ kiểu TEXT không ràng buộc và Backend không kiểm tra `shipping_address.length <= 255`, cho phép lưu trữ chuỗi vượt quá giới hạn thiết kế chuẩn (VARCHAR 255).
+
+#### 2. Các bước tái hiện (Steps to Reproduce)
+1. Tạo chuỗi 256 ký tự: `"A" * 256`.
+2. Gửi request `POST /api/checkout` với `shipping_address` là chuỗi 256 ký tự trên.
+3. Quan sát kết quả trong CSDL SQLite.
+
+#### 3. Kết quả mong đợi (Expected Result)
+Backend từ chối (HTTP 400 Bad Request) hoặc cắt bớt độ dài tối đa 255 ký tự.
+
+#### 4. Kết quả thực tế (Actual Result)
+Backend chấp nhận và lưu toàn bộ chuỗi 256 ký tự vào CSDL với mã HTTP 200 OK.
+
+#### 5. Bằng chứng hình ảnh (Screenshot)
+* **Ảnh minh chứng:** [`EXE-11_Bug_BVA_Address_256Chars_Accepted.png`](../screenshots/pool%20B/EXE-11_Bug_BVA_Address_256Chars_Accepted.png)
+
+![EXE-11_Bug_BVA_Address_256Chars_Accepted.png](../screenshots/pool%20B/EXE-11_Bug_BVA_Address_256Chars_Accepted.png)
+
+---

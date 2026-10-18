@@ -1,119 +1,117 @@
-﻿# BÃO CÃO KIá»‚M THá»¬ MIá»€N GIÃ TRá»Š VÃ€ PHÃ‚N TÃCH GIÃ TRá»Š BIÃŠN
-## TÃNH NÄ‚NG FR-04: QUáº¢N LÃ Há»’ SÆ  CÃ NHÃ‚N (POOL A)
+# BÁO CÁO KIỂM THỬ MIỀN GIÁ TRỊ VÀ PHÂN TÍCH GIÁ TRỊ BIÊN
+## TÍNH NĂNG FR-04: QUẢN LÝ HỒ SƠ CÁ NHÂN (POOL A)
 
-* **MÃ£ sinh viÃªn:** 23120127
-* **Há» vÃ  tÃªn:** DÆ°Æ¡ng Trá»ng HÃ²a
-* **Há»‡ thá»‘ng Ä‘Æ°á»£c kiá»ƒm thá»­ (SUT):** EShop Platform (`http://localhost:5173` / Backend API `http://localhost:3000`)
-* **Ká»¹ thuáº­t Ã¡p dá»¥ng:** Domain Testing (Equivalence Partitioning - EP) & Boundary Value Analysis (3-Value BVA theo chuáº©n ISTQB)
-* **Thá»i gian thá»±c hiá»‡n:** 2026-10-18
+* **Mã sinh viên:** 23120127
+* **Họ và tên:** Dương Trọng Hòa
+* **Hệ thống được kiểm thử (SUT):** EShop Platform (`http://localhost:5173` / Backend API `http://localhost:3000`)
+* **Kỹ thuật áp dụng:** Domain Testing (Equivalence Partitioning - EP) & Boundary Value Analysis (3-Value BVA theo chuẩn ISTQB)
+* **Thời gian thực hiện:** 2026-10-18
 
 ---
 
-## 1. Äáº¶C Táº¢ YÃŠU Cáº¦U & PHÃ‚N TÃCH BIáº¾N Äáº¦U VÃ€O (SPECIFICATION ANALYSIS)
+## 1. ĐẶC TẢ YÊU CẦU & PHÂN TÍCH BIẾN ĐẦU VÀO (SPECIFICATION ANALYSIS)
 
-### 1.1 TrÃ­ch xuáº¥t Ä‘áº·c táº£ FR-04 tá»« System Requirements Specification
-> * NgÆ°á»i dÃ¹ng Ä‘Ã£ Ä‘Äƒng nháº­p cÃ³ thá»ƒ cáº­p nháº­t: **Há» TÃªn**, **Sá»‘ Ä‘iá»‡n thoáº¡i**, **Äá»‹a chá»‰ giao hÃ ng máº·c Ä‘á»‹nh**.
-> * **Sá»‘ Ä‘iá»‡n thoáº¡i há»£p lá»‡**: báº¯t Ä‘áº§u báº±ng sá»‘ `0`, tá»« 10â€“11 chá»¯ sá»‘.
-> * Email khÃ´ng Ä‘Æ°á»£c phÃ©p thay Ä‘á»•i qua giao diá»‡n.
-> * NgÆ°á»i dÃ¹ng chá»‰ cÃ³ thá»ƒ cáº­p nháº­t há»“ sÆ¡ cá»§a chÃ­nh mÃ¬nh; khÃ´ng thá»ƒ tá»± thay Ä‘á»•i thuá»™c tÃ­nh `role`.
-> * *RÃ ng buá»™c giao diá»‡n chung (FR-21, FR-22)*: Má»—i trang chá»‰ cÃ³ 1 tháº» `<h1>`, thÃ´ng bÃ¡o lá»—i hiá»ƒn thá»‹ á»Ÿ phÃ­a trÃªn nÃºt Submit, cÃ¡c trÆ°á»ng báº¯t buá»™c cÃ³ dáº¥u `*`.
+### 1.1 Trích xuất đặc tả FR-04 từ System Requirements Specification
+> * Người dùng đã đăng nhập có thể cập nhật: **Họ Tên**, **Số điện thoại**, **Địa chỉ giao hàng mặc định**.
+> * **Số điện thoại hợp lệ**: bắt đầu bằng số `0`, từ 10–11 chữ số.
+> * Email không được phép thay đổi qua giao diện.
+> * Người dùng chỉ có thể cập nhật hồ sơ của chính mình; không thể tự thay đổi thuộc tính `role`.
+> * *Ràng buộc giao diện chung (FR-21, FR-22)*: Mỗi trang chỉ có 1 thẻ `<h1>`, thông báo lỗi hiển thị ở phía trên nút Submit, các trường bắt buộc có dấu `*`.
 
-### 1.2 Äiá»u kiá»‡n tiÃªn quyáº¿t (Preconditions)
-* NgÆ°á»i dÃ¹ng Ä‘Ã£ Ä‘Äƒng nháº­p thÃ nh cÃ´ng vÃ o há»‡ thá»‘ng EShop vá»›i tÃ i khoáº£n há»£p lá»‡: `test@eshop.com` / `Test1234!` (`id = 2`, `role = 'user'`).
-* Token xÃ¡c thá»±c JWT Ä‘Æ°á»£c Ä‘Ã­nh kÃ¨m há»£p lá»‡ trong Header `Authorization: Bearer <token>`.
+### 1.2 Điều kiện tiên quyết (Preconditions)
+* Người dùng đã đăng nhập thành công vào hệ thống EShop với tài khoản hợp lệ: `test@eshop.com` / `Test1234!` (`id = 2`, `role = 'user'`).
+* Token xác thực JWT được đính kèm hợp lệ trong Header `Authorization: Bearer <token>`.
 
-### 1.3 Danh sÃ¡ch biáº¿n Ä‘áº§u vÃ o vÃ  rÃ ng buá»™c
+### 1.3 Danh sách biến đầu vào và ràng buộc
 
-| TÃªn biáº¿n Ä‘áº§u vÃ o | Kiá»ƒu dá»¯ liá»‡u | Miá»n giÃ¡ trá»‹ há»£p lá»‡ (Valid Domain) | RÃ ng buá»™c ká»¹ thuáº­t & Nghiá»‡p vá»¥ (Constraints) |
+| Tên biến đầu vào | Kiểu dữ liệu | Miền giá trị hợp lệ (Valid Domain) | Ràng buộc kỹ thuật & Nghiệp vụ (Constraints) |
 | :--- | :--- | :--- | :--- |
-| **`Há» TÃªn` (name)** | String | Chuá»—i kÃ½ tá»± khÃ¡c rá»—ng, Ä‘á»™ dÃ i tá»« $1$ Ä‘áº¿n $255$ kÃ½ tá»±. | Báº¯t buá»™c (cÃ³ dáº¥u `*`). KhÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng. |
-| **`Sá»‘ Ä‘iá»‡n thoáº¡i` (phone)** | String (Numeric) | Chuá»—i sá»‘ báº¯t Ä‘áº§u báº±ng kÃ½ tá»± `'0'`, Ä‘á»™ dÃ i tá»« $10$ Ä‘áº¿n $11$ chá»¯ sá»‘. | Báº¯t buá»™c (`*`). Äá»‹nh dáº¡ng chuáº©n: `^0\d{9,10}$`. KhÃ´ng chá»©a chá»¯ cÃ¡i, khoáº£ng tráº¯ng hay kÃ½ tá»± Ä‘áº·c biá»‡t. |
-| **`Äá»‹a chá»‰ giao hÃ ng` (shipping_address)** | String | Chuá»—i kÃ½ tá»± mÃ´ táº£ Ä‘á»‹a chá»‰, Ä‘á»™ dÃ i tá»« $1$ Ä‘áº¿n $255$ kÃ½ tá»±. | Báº¯t buá»™c (`*`). KhÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng. |
-| **`Email`** *(Biáº¿n kiá»ƒm thá»­ Ã¢m)* | Email String | KhÃ´ng cÃ³ (Read-only trÃªn UI). | **Cáº¥m thay Ä‘á»•i**: UI khÃ³a chá»‰nh sá»­a. API Backend pháº£i bá» qua hoáº·c tá»« chá»‘i náº¿u Client cá»‘ tÃ¬nh gá»­i kÃ¨m email má»›i. |
-| **`role`** *(Biáº¿n kiá»ƒm thá»­ báº£o máº­t)* | String | KhÃ´ng cÃ³ (KhÃ´ng nháº­n tá»« Client). | **RÃ ng buá»™c an ninh (SEC-06)**: Client cáº¥m tá»± Ä‘á»•i quyá»n thÃ nh `'admin'`. Backend báº¯t buá»™c pháº£i cháº·n hoáº·c phá»›t lá». |
-| **`id` / `user_id`** *(Biáº¿n kiá»ƒm thá»­ IDOR)* | Integer | `id = 2` (TrÃ¹ng ID giáº£i mÃ£ tá»« Token). | NgÆ°á»i dÃ¹ng chá»‰ cÃ³ quyá»n cáº­p nháº­t há»“ sÆ¡ cá»§a chÃ­nh mÃ¬nh, cáº¥m sá»­a sang ID cá»§a ngÆ°á»i khÃ¡c (SEC-02). |
+| **`Họ Tên` (name)** | String | Chuỗi ký tự khác rỗng, độ dài từ $1$ đến $255$ ký tự. | Bắt buộc (có dấu `*`). Không được để trống. |
+| **`Số điện thoại` (phone)** | String (Numeric) | Chuỗi số bắt đầu bằng ký tự `'0'`, độ dài từ $10$ đến $11$ chữ số. | Bắt buộc (`*`). Định dạng chuẩn: `^0\d{9,10}$`. Không chứa chữ cái, khoảng trắng hay ký tự đặc biệt. |
+| **`Địa chỉ giao hàng` (shipping_address)** | String | Chuỗi ký tự mô tả địa chỉ, độ dài từ $1$ đến $255$ ký tự. | Bắt buộc (`*`). Không được để trống. |
+| **`Email`** *(Biến kiểm thử âm)* | Email String | Không có (Read-only trên UI). | **Cấm thay đổi**: UI khóa chỉnh sửa. API Backend phải bỏ qua hoặc từ chối nếu Client cố tình gửi kèm email mới. |
+| **`role`** *(Biến kiểm thử bảo mật)* | String | Không có (Không nhận từ Client). | **Ràng buộc an ninh (SEC-06)**: Client cấm tự đổi quyền thành `'admin'`. Backend bắt buộc phải chặn hoặc phớt lờ. |
+| **`id` / `user_id`** *(Biến kiểm thử IDOR)* | Integer | `id = 2` (Trùng ID giải mã từ Token). | Người dùng chỉ có quyền cập nhật hồ sơ của chính mình, cấm sửa sang ID của người khác (SEC-02). |
 
 ---
 
-## 2. PHÃ‚N VÃ™NG TÆ¯Æ NG ÄÆ¯Æ NG (EQUIVALENCE PARTITIONING - EP)
+## 2. PHÂN VÙNG TƯƠNG ĐƯƠNG (EQUIVALENCE PARTITIONING - EP)
 
-Dá»±a trÃªn cÃ¡c biáº¿n Ä‘áº§u vÃ o, phÃ¢n chia miá»n giÃ¡ trá»‹ thÃ nh cÃ¡c lá»›p tÆ°Æ¡ng Ä‘Æ°Æ¡ng há»£p lá»‡ (Valid) vÃ  khÃ´ng há»£p lá»‡ (Invalid):
+Dựa trên các biến đầu vào, phân chia miền giá trị thành các lớp tương đương hợp lệ (Valid) và không hợp lệ (Invalid):
 
-| Biáº¿n | Lá»›p tÆ°Æ¡ng Ä‘Æ°Æ¡ng | Loáº¡i | GiÃ¡ trá»‹ Ä‘áº¡i diá»‡n | MÃ´ táº£ kiá»ƒm thá»­ |
+| Biến | Lớp tương đương | Loại | Giá trị đại diện | Mô tả kiểm thử |
 | :--- | :--- | :---: | :--- | :--- |
-| **`Há» TÃªn`** | **EC1.1** | Valid | `"Nguyá»…n VÄƒn A"` | Chuá»—i há» tÃªn thÃ´ng thÆ°á»ng há»£p lá»‡ (1â€“255 kÃ½ tá»±). |
-| | **EC1.2** | Invalid | `""` (Rá»—ng) | Bá» trá»‘ng Há» TÃªn (0 kÃ½ tá»±). |
-| | **EC1.3** | Invalid | `"A".repeat(256)` | Chuá»—i vÆ°á»£t quÃ¡ 255 kÃ½ tá»± (256 kÃ½ tá»±). |
-| **`Äá»‹a chá»‰ giao hÃ ng`** | **EC2.1** | Valid | `"123 LÃª Lá»£i, Quáº­n 1, TP.HCM"` | Chuá»—i Ä‘á»‹a chá»‰ há»£p lá»‡ (1â€“255 kÃ½ tá»±). |
-| | **EC2.2** | Invalid | `""` (Rá»—ng) | Bá» trá»‘ng Äá»‹a chá»‰ giao hÃ ng (0 kÃ½ tá»±). |
-| | **EC2.3** | Invalid | `"B".repeat(256)` | Chuá»—i Ä‘á»‹a chá»‰ vÆ°á»£t quÃ¡ 255 kÃ½ tá»±. |
-| **`Sá»‘ Ä‘iá»‡n thoáº¡i`** | **EC3.1** | Valid | `"0912345678"` | Báº¯t Ä‘áº§u báº±ng sá»‘ `0`, Ä‘á»™ dÃ i Ä‘Ãºng **10 chá»¯ sá»‘**. |
-| | **EC3.2** | Valid | `"01234567890"` | Báº¯t Ä‘áº§u báº±ng sá»‘ `0`, Ä‘á»™ dÃ i Ä‘Ãºng **11 chá»¯ sá»‘**. |
-| | **EC3.3** | Invalid | `""` (Rá»—ng) | Bá» trá»‘ng Sá»‘ Ä‘iá»‡n thoáº¡i. |
-| | **EC3.4** | Invalid | `"091234567"` | Báº¯t Ä‘áº§u báº±ng `0`, nhÆ°ng Ä‘á»™ dÃ i **< 10 chá»¯ sá»‘** (9 sá»‘). |
-| | **EC3.5** | Invalid | `"012345678901"` | Báº¯t Ä‘áº§u báº±ng `0`, nhÆ°ng Ä‘á»™ dÃ i **> 11 chá»¯ sá»‘** (12 sá»‘). |
-| | **EC3.6** | Invalid | `"1912345678"` | Äá»§ 10 sá»‘ nhÆ°ng **khÃ´ng báº¯t Ä‘áº§u báº±ng sá»‘ `0`** (báº¯t Ä‘áº§u báº±ng 1-9). |
-| | **EC3.7** | Invalid | `"091234567a"` | Chá»©a kÃ½ tá»± chá»¯ cÃ¡i hoáº·c kÃ½ tá»± Ä‘áº·c biá»‡t. |
-| **`Email`** | **EC4.1** | Valid | *(Read-only / Giá»¯ nguyÃªn)* | Email khÃ´ng bá»‹ can thiá»‡p trÃªn UI. |
-| | **EC4.2** | Invalid | `"hacker_moi@eshop.com"` | Cá»‘ tÃ¬nh truyá»n `email` má»›i trong body request API. |
-| **`role`** | **EC5.1** | Valid | *(KhÃ´ng gá»­i trong body)* | KhÃ´ng truyá»n thuá»™c tÃ­nh `role`. |
-| | **EC5.2** | Invalid | `"role": "admin"` | Cá»‘ tÃ¬nh truyá»n `role: "admin"` Ä‘á»ƒ nÃ¢ng quyá»n (SEC-06). |
-| **`Target User ID`** | **EC6.1** | Valid | `id = 2` | Thao tÃ¡c trÃªn Ä‘Ãºng há»“ sÆ¡ cá»§a mÃ¬nh. |
-| | **EC6.2** | Invalid | `id = 1` | Cá»‘ tÃ¬nh gá»­i request sá»­a há»“ sÆ¡ cá»§a user khÃ¡c (IDOR). |
+| **`Họ Tên`** | **EC1.1** | Valid | `"Nguyễn Văn A"` | Chuỗi họ tên thông thường hợp lệ (1–255 ký tự). |
+| | **EC1.2** | Invalid | `""` (Rỗng) | Bỏ trống Họ Tên (0 ký tự). |
+| | **EC1.3** | Invalid | `"A".repeat(256)` | Chuỗi vượt quá 255 ký tự (256 ký tự). |
+| **`Địa chỉ giao hàng`** | **EC2.1** | Valid | `"123 Lê Lợi, Quận 1, TP.HCM"` | Chuỗi địa chỉ hợp lệ (1–255 ký tự). |
+| | **EC2.2** | Invalid | `""` (Rỗng) | Bỏ trống Địa chỉ giao hàng (0 ký tự). |
+| | **EC2.3** | Invalid | `"B".repeat(256)` | Chuỗi địa chỉ vượt quá 255 ký tự. |
+| **`Số điện thoại`** | **EC3.1** | Valid | `"0912345678"` | Bắt đầu bằng số `0`, độ dài đúng **10 chữ số**. |
+| | **EC3.2** | Valid | `"01234567890"` | Bắt đầu bằng số `0`, độ dài đúng **11 chữ số**. |
+| | **EC3.3** | Invalid | `""` (Rỗng) | Bỏ trống Số điện thoại. |
+| | **EC3.4** | Invalid | `"091234567"` | Bắt đầu bằng `0`, nhưng độ dài **< 10 chữ số** (9 số). |
+| | **EC3.5** | Invalid | `"012345678901"` | Bắt đầu bằng `0`, nhưng độ dài **> 11 chữ số** (12 số). |
+| | **EC3.6** | Invalid | `"1912345678"` | Đủ 10 số nhưng **không bắt đầu bằng số `0`** (bắt đầu bằng 1-9). |
+| | **EC3.7** | Invalid | `"091234567a"` | Chứa ký tự chữ cái hoặc ký tự đặc biệt. |
+| **`Email`** | **EC4.1** | Valid | *(Read-only / Giữ nguyên)* | Email không bị can thiệp trên UI. |
+| | **EC4.2** | Invalid | `"hacker_moi@eshop.com"` | Cố tình truyền `email` mới trong body request API. |
+| **`role`** | **EC5.1** | Valid | *(Không gửi trong body)* | Không truyền thuộc tính `role`. |
+| | **EC5.2** | Invalid | `"role": "admin"` | Cố tình truyền `role: "admin"` để nâng quyền (SEC-06). |
+| **`Target User ID`** | **EC6.1** | Valid | `id = 2` | Thao tác trên đúng hồ sơ của mình. |
+| | **EC6.2** | Invalid | `id = 1` | Cố tình gửi request sửa hồ sơ của user khác (IDOR). |
 
 ---
 
-## 3. PHÃ‚N TÃCH GIÃ TRá»Š BIÃŠN (BOUNDARY VALUE ANALYSIS - 3-VALUE BVA)
+## 3. PHÂN TÍCH GIÁ TRỊ BIÊN (BOUNDARY VALUE ANALYSIS - 3-VALUE BVA)
 
-Ãp dá»¥ng ká»¹ thuáº­t 3-Value BVA theo chuáº©n ISTQB ($Min-1, Min, Min+1, Nominal, Max-1, Max, Max+1$):
+Áp dụng kỹ thuật 3-Value BVA theo chuẩn ISTQB ($Min-1, Min, Min+1, Nominal, Max-1, Max, Max+1$):
 
-### 3.1 Báº£ng phÃ¢n tÃ­ch giÃ¡ trá»‹ biÃªn 3 giÃ¡ trá»‹
+### 3.1 Bảng phân tích giá trị biên 3 giá trị
 
-| Biáº¿n kiá»ƒm thá»­ | Ranh giá»›i (Boundary) | Min - 1 | Min | Min + 1 | Nominal | Max - 1 | Max | Max + 1 |
+| Biến kiểm thử | Ranh giới (Boundary) | Min - 1 | Min | Min + 1 | Nominal | Max - 1 | Max | Max + 1 |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **`Sá»‘ Ä‘iá»‡n thoáº¡i`** *(Äá»™ dÃ i sá»‘)* | $[10, 11]$ chá»¯ sá»‘ | `9 sá»‘` *(Invalid)* | `10 sá»‘` *(Valid)* | `11 sá»‘` *(Valid - Max)* | `10 sá»‘` | `10 sá»‘` *(Min)* | `11 sá»‘` *(Valid)* | `12 sá»‘` *(Invalid)* |
-| **`Sá»‘ Ä‘iá»‡n thoáº¡i`** *(KÃ½ tá»± Ä‘áº§u - ASCII)* | Báº¯t Ä‘áº§u báº±ng `'0'` (ASCII 48) | ASCII 47 `'/'` *(Invalid)* | ASCII 48 `'0'` *(Valid)* | ASCII 49 `'1'` *(Invalid)* | `'0'` | *(BiÃªn Ä‘Æ¡n Ä‘iá»ƒm)* | ASCII 48 `'0'` | ASCII 49 `'1'` |
-| **`Há» TÃªn`** *(Äá»™ dÃ i chuá»—i)* | $[1, 255]$ kÃ½ tá»± | `0 kÃ½ tá»±` *(Invalid)* | `1 kÃ½ tá»±` *(Valid)* | `2 kÃ½ tá»±` *(Valid)* | `12 kÃ½ tá»±` | `254 kÃ½ tá»±` *(Valid)* | `255 kÃ½ tá»±` *(Valid)* | `256 kÃ½ tá»±` *(Invalid)* |
-| **`Äá»‹a chá»‰`** *(Äá»™ dÃ i chuá»—i)* | $[1, 255]$ kÃ½ tá»± | `0 kÃ½ tá»±` *(Invalid)* | `1 kÃ½ tá»±` *(Valid)* | `2 kÃ½ tá»±` *(Valid)* | `25 kÃ½ tá»±` | `254 kÃ½ tá»±` *(Valid)* | `255 kÃ½ tá»±` *(Valid)* | `256 kÃ½ tá»±` *(Invalid)* |
+| **`Số điện thoại`** *(Độ dài số)* | $[10, 11]$ chữ số | `9 số` *(Invalid)* | `10 số` *(Valid)* | `11 số` *(Valid - Max)* | `10 số` | `10 số` *(Min)* | `11 số` *(Valid)* | `12 số` *(Invalid)* |
+| **`Số điện thoại`** *(Ký tự đầu - ASCII)* | Bắt đầu bằng `'0'` (ASCII 48) | ASCII 47 `'/'` *(Invalid)* | ASCII 48 `'0'` *(Valid)* | ASCII 49 `'1'` *(Invalid)* | `'0'` | *(Biên đơn điểm)* | ASCII 48 `'0'` | ASCII 49 `'1'` |
+| **`Họ Tên`** *(Độ dài chuỗi)* | $[1, 255]$ ký tự | `0 ký tự` *(Invalid)* | `1 ký tự` *(Valid)* | `2 ký tự` *(Valid)* | `12 ký tự` | `254 ký tự` *(Valid)* | `255 ký tự` *(Valid)* | `256 ký tự` *(Invalid)* |
+| **`Địa chỉ`** *(Độ dài chuỗi)* | $[1, 255]$ ký tự | `0 ký tự` *(Invalid)* | `1 ký tự` *(Valid)* | `2 ký tự` *(Valid)* | `25 ký tự` | `254 ký tự` *(Valid)* | `255 ký tự` *(Valid)* | `256 ký tự` *(Invalid)* |
 
 ---
 
-## 4. Káº¾T QUáº¢ THá»°C THI KIá»‚M THá»¬ THá»°C Táº¾ (TEST EXECUTION RESULTS)
+## 4. KẾT QUẢ THỰC THI KIỂM THỬ THỰC TẾ (TEST EXECUTION RESULTS)
 
-Táº¥t cáº£ 16 ká»‹ch báº£n kiá»ƒm thá»­ Ä‘Ã£ Ä‘Æ°á»£c thá»±c thi trá»±c tiáº¿p trÃªn há»‡ thá»‘ng EShop thá»±c táº¿ (Frontend `http://localhost:5173`, Backend `http://localhost:3000`, CSDL `database.sqlite`). HÃ¬nh áº£nh báº±ng chá»©ng Ä‘Ã£ Ä‘Æ°á»£c lÆ°u trá»¯ Ä‘áº§y Ä‘á»§ táº¡i thÆ° má»¥c `screenshots/pool A/`.
+Tất cả 16 kịch bản kiểm thử đã được thực thi trực tiếp trên hệ thống EShop thực tế (Frontend `http://localhost:5173`, Backend `http://localhost:3000`, CSDL `database.sqlite`). Hình ảnh bằng chứng đã được lưu trữ đầy đủ tại thư mục `screenshots/fr04/`.
 
-| MÃ£ TC | Ká»‹ch báº£n kiá»ƒm thá»­ | Dá»¯ liá»‡u Ä‘áº§u vÃ o (Input) | Káº¿t quáº£ mong Ä‘á»£i (Expected Result) | Káº¿t quáº£ thá»±c táº¿ (Actual Result) | Tráº¡ng thÃ¡i | Báº±ng chá»©ng (Screenshot) | MÃ£ lá»—i (Bug ID) |
+| Mã TC | Kịch bản kiểm thử | Dữ liệu đầu vào (Input) | Kết quả mong đợi (Expected Result) | Kết quả thực tế (Actual Result) | Trạng thái | Bằng chứng (Screenshot) | Mã lỗi (Bug ID) |
 | :---: | :--- | :--- | :--- | :--- | :---: | :--- | :---: |
-| **EXE-01** | Kiá»ƒm tra GUI, tháº» `<h1>` & KhÃ³a trÆ°á»ng Email | Quan sÃ¡t giao diá»‡n; Console Ä‘áº¿m `<h1>` | ÄÃºng 1 tháº» `<h1>`; trÆ°á»ng Email disabled; nhÃ£n cÃ³ `*` Ä‘á»; nÃºt LÆ°u mÃ u xanh. | ÄÃºng 1 tháº» h1. TrÆ°á»ng Email cÃ³ thuá»™c tÃ­nh disabled, khÃ´ng cho phÃ©p nháº­p liá»‡u. NÃºt LÆ°u mÃ u xanh. | **PASS** | `EXE-01_GUI_Email_Check.png` | â€” |
-| **EXE-02** | Cáº­p nháº­t há»£p lá»‡ â€” SÄT 10 sá»‘ (BiÃªn Min) | Há» tÃªn: `"Nguyá»…n VÄƒn A"`<br>SÄT: `"0912345678"` (10 sá»‘)<br>Ä/c: `"123 LÃª Lá»£i"` | Cáº­p nháº­t thÃ nh cÃ´ng (HTTP 200). LÆ°u SÄT 10 sá»‘ vÃ o CSDL. | Há»‡ thá»‘ng tá»« chá»‘i vÃ  hiá»ƒn thá»‹ thÃ´ng bÃ¡o lá»—i: *"Sá»‘ Ä‘iá»‡n thoáº¡i khÃ´ng há»£p lá»‡. Vui lÃ²ng nháº­p 9-10 chá»¯ sá»‘"*. | **FAIL** | `EXE-02_Valid_10Digits_Phone.png` | **BUG-FR04-01** |
-| **EXE-03** | Cáº­p nháº­t há»£p lá»‡ â€” SÄT 11 sá»‘ (BiÃªn Max) | Há» tÃªn: `"Tráº§n Thá»‹ B"`<br>SÄT: `"01234567890"` (11 sá»‘)<br>Ä/c: `"456 Nguyá»…n Huá»‡"` | Cáº­p nháº­t thÃ nh cÃ´ng (HTTP 200). LÆ°u SÄT 11 sá»‘ vÃ o CSDL. | Há»‡ thá»‘ng tá»« chá»‘i vÃ  hiá»ƒn thá»‹ thÃ´ng bÃ¡o lá»—i: *"Sá»‘ Ä‘iá»‡n thoáº¡i khÃ´ng há»£p lá»‡. Vui lÃ²ng nháº­p 9-10 chá»¯ sá»‘"*. | **FAIL** | `EXE-03_Valid_11Digits_Phone.png` | **BUG-FR04-01** |
-| **EXE-04** | BiÃªn dÆ°á»›i Há» tÃªn & Äá»‹a chá»‰ (Min = 1 kÃ½ tá»±) | Há» tÃªn: `"A"` (1 char)<br>SÄT: `"0912345678"`<br>Ä/c: `"1"` (1 char) | Cáº­p nháº­t thÃ nh cÃ´ng (HTTP 200). | Há»‡ thá»‘ng cháº¥p nháº­n Ä‘á»™ dÃ i tá»‘i thiá»ƒu 1 kÃ½ tá»± cho Há» TÃªn vÃ  Äá»‹a chá»‰. LÆ°u thÃ nh cÃ´ng. | **PASS** | `EXE-04_BVA_Min_1Char.png` | â€” |
-| **EXE-05** | BiÃªn trÃªn Há» tÃªn & Äá»‹a chá»‰ (Max = 255 kÃ½ tá»±) | Há» tÃªn: `"A".repeat(255)`<br>Ä/c: `"B".repeat(255)` | LÆ°u thÃ nh cÃ´ng chuá»—i 255 kÃ½ tá»±. Giao diá»‡n an toÃ n. | Há»‡ thá»‘ng lÆ°u thÃ nh cÃ´ng chuá»—i 255 kÃ½ tá»± cho Há» TÃªn vÃ  Äá»‹a chá»‰. Giao diá»‡n hiá»ƒn thá»‹ an toÃ n, khÃ´ng bá»‹ trÃ n khung. | **PASS** | `EXE-05_BVA_Max_255Chars.png` | â€” |
-| **EXE-06** | Äá»ƒ trá»‘ng Há» tÃªn (Min - 1 = 0 kÃ½ tá»±) | Há» tÃªn: `""`<br>SÄT: `"0912345678"`<br>Ä/c: `"123 LÃª Lá»£i"` | Tá»« chá»‘i cáº­p nháº­t. BÃ¡o lá»—i phÃ­a TRÃŠN nÃºt báº¥m (FR-22). | Há»‡ thá»‘ng cháº·n cáº­p nháº­t khi Ä‘á»ƒ trá»‘ng Há» tÃªn. ThÃ´ng bÃ¡o lá»—i hiá»ƒn thá»‹ báº±ng tiáº¿ng Viá»‡t rÃµ rÃ ng á»Ÿ phÃ­a trÃªn nÃºt báº¥m theo Ä‘Ãºng FR-22. | **PASS** | `EXE-06_Error_Empty_Name.png` | â€” |
-| **EXE-07** | Äá»ƒ trá»‘ng Äá»‹a chá»‰ (Min - 1 = 0 kÃ½ tá»±) | Há» tÃªn: `"Nguyá»…n VÄƒn A"`<br>SÄT: `"0912345678"`<br>Ä/c: `""` | Há»‡ thá»‘ng tá»« chá»‘i vÃ  yÃªu cáº§u nháº­p Ä‘á»‹a chá»‰ báº¯t buá»™c. | Há»‡ thá»‘ng cho phÃ©p lÆ°u Ä‘á»‹a chá»‰ rá»—ng, hiá»ƒn thá»‹ thÃ´ng bÃ¡o cáº­p nháº­t thÃ nh cÃ´ng vÃ  ghi chuá»—i rá»—ng vÃ o CSDL. | **FAIL** | `EXE-07_Error_Empty_Address.png` | **BUG-FR04-02** |
-| **EXE-08** | Há» tÃªn & Äá»‹a chá»‰ vÆ°á»£t biÃªn trÃªn (Max + 1 = 256 kÃ½ tá»±) | Há» tÃªn: `"A".repeat(256)`<br>Ä/c: `"B".repeat(256)` | Cháº·n khÃ´ng cho nháº­p/lÆ°u quÃ¡ 255 kÃ½ tá»±. | Input cho phÃ©p nháº­p quÃ¡ 255 kÃ½ tá»±. Há»‡ thá»‘ng gá»­i request vÃ  tráº£ vá» cáº­p nháº­t thÃ nh cÃ´ng, khÃ´ng cháº·n giá»›i háº¡n Ä‘á»™ dÃ i. | **FAIL** | `EXE-08_BVA_MaxPlus1_256Chars.png` | **BUG-FR04-03** |
-| **EXE-09** | Bá» trá»‘ng Sá»‘ Ä‘iá»‡n thoáº¡i | SÄT: `""` (Rá»—ng) | Cháº·n vÃ  hiá»ƒn thá»‹ lá»—i SÄT báº¯t buá»™c. | Há»‡ thá»‘ng hiá»ƒn thá»‹: *"Sá»‘ Ä‘iá»‡n thoáº¡i khÃ´ng há»£p lá»‡. Vui lÃ²ng nháº­p Ä‘Ãºng 9-10 chá»¯ sá»‘"*. Cháº·n thÃ nh cÃ´ng. | **PASS** | `EXE-09_Error_Empty_Phone.png` | â€” |
-| **EXE-10** | SÄT ngáº¯n hÆ¡n quy Ä‘á»‹nh (Min - 1 = 9 chá»¯ sá»‘) | SÄT: `"091234567"` (9 sá»‘) | Tá»« chá»‘i cáº­p nháº­t vÃ¬ SÄT pháº£i tá»« 10â€“11 sá»‘. | Há»‡ thá»‘ng tá»« chá»‘i cáº­p nháº­t, hiá»ƒn thá»‹: *"Sá»‘ Ä‘iá»‡n thoáº¡i khÃ´ng há»£p lá»‡. Vui lÃ²ng nháº­p Ä‘Ãºng 9-10 chá»¯ sá»‘"*. | **PASS** | `EXE-10_BVA_Phone_9Digits_Fail.png` | â€” |
-| **EXE-11** | SÄT dÃ i hÆ¡n quy Ä‘á»‹nh (Max + 1 = 12 chá»¯ sá»‘) | SÄT: `"012345678901"` (12 sá»‘) | Tá»« chá»‘i cáº­p nháº­t vÃ¬ vÆ°á»£t quÃ¡ 11 sá»‘. | Há»‡ thá»‘ng tá»« chá»‘i cáº­p nháº­t, hiá»ƒn thá»‹: *"Sá»‘ Ä‘iá»‡n thoáº¡i khÃ´ng há»£p lá»‡. Vui lÃ²ng nháº­p Ä‘Ãºng 9-10 chá»¯ sá»‘"*. | **PASS** | `EXE-11_BVA_Phone_12Digits_Fail.png` | â€” |
-| **EXE-12** | SÄT khÃ´ng báº¯t Ä‘áº§u báº±ng sá»‘ 0 (BiÃªn ASCII Min + 1) | SÄT: `"1912345678"` (10 sá»‘, báº¯t Ä‘áº§u báº±ng `'1'`) | Tá»« chá»‘i cáº­p nháº­t vÃ¬ vi pháº¡m quy táº¯c báº¯t Ä‘áº§u báº±ng sá»‘ `0`. | Há»‡ thá»‘ng cháº¥p nháº­n sá»‘ Ä‘iá»‡n thoáº¡i khÃ´ng báº¯t Ä‘áº§u báº±ng sá»‘ khÃ´ng. Há»‡ thá»‘ng hiá»ƒn thá»‹ Cáº­p nháº­t thÃ nh cÃ´ng. | **FAIL** | `EXE-12_BVA_Phone_NotStartWithZero.png` | **BUG-FR04-04** |
-| **EXE-13** | SÄT chá»©a chá»¯ cÃ¡i / kÃ½ tá»± Ä‘áº·c biá»‡t | SÄT: `"091234567a"` | Tá»« chá»‘i cáº­p nháº­t vÃ¬ chá»©a kÃ½ tá»± khÃ´ng pháº£i chá»¯ sá»‘. | Há»‡ thá»‘ng cháº·n cáº­p nháº­t, hiá»ƒn thá»‹: *"Sá»‘ Ä‘iá»‡n thoáº¡i khÃ´ng há»£p lá»‡. Vui lÃ²ng nháº­p Ä‘Ãºng 9-10 chá»¯ sá»‘"*. | **PASS** | `EXE-13_Error_Phone_With_Letters.png` | â€” |
-| **EXE-14** | Cá»‘ tÃ¬nh can thiá»‡p thay Ä‘á»•i Email qua API payload | Body gá»­i: `"email": "hacker_moi@eshop.com"` | Backend bá» qua hoáº·c tá»« chá»‘i, CSDL giá»¯ nguyÃªn email gá»‘c. | Backend bá» qua trÆ°á»ng email trong payload, CSDL SQLite váº«n giá»¯ nguyÃªn email gá»‘c 'test@eshop.com'. Äáº¡t chuáº©n an toÃ n FR-04. | **PASS** | `EXE-14_Security_Tamper_Email.png` | â€” |
-| **EXE-15** | Cá»‘ tÃ¬nh nÃ¢ng quyá»n `role = "admin"` qua API | Body gá»­i: `"role": "admin"` | Backend cáº¥m sá»­a `role` (HTTP 400/403). CSDL giá»¯ `role = 'user'`. | Backend cáº­p nháº­t trá»±c tiáº¿p `role = 'admin'` vÃ o SQLite. DÃ¹ng tÃ i khoáº£n `test@eshop.com` Ä‘Äƒng nháº­p Ä‘Æ°á»£c luÃ´n vÃ o Web Admin `http://localhost:5174/`! | **FAIL** | `EXE-15_Bug_Privilege_Escalation.png` | **BUG-FR04-05** |
-| **EXE-16** | Cá»‘ tÃ¬nh sá»­a há»“ sÆ¡ tÃ i khoáº£n Admin (IDOR) | Body gá»­i: `id = 1, name = "Hacker"` | Tá»« chá»‘i cáº­p nháº­t hoáº·c chá»‰ sá»­a há»“ sÆ¡ chÃ­nh mÃ¬nh. Admin giá»¯ nguyÃªn. | Há»‡ thá»‘ng chá»‰ cáº­p nháº­t theo ID trong JWT Token (`id = 2`). Há»“ sÆ¡ cá»§a Admin (`id = 1`) Ä‘Æ°á»£c báº£o vá»‡ an toÃ n. | **PASS** | `EXE-16_Security_IDOR_Check.png` | â€” |
+| **EXE-01** | Kiểm tra GUI, thẻ `<h1>` & Khóa trường Email | Quan sát giao diện; Console đếm `<h1>` | Đúng 1 thẻ `<h1>`; trường Email disabled; nhãn có `*` đỏ; nút Lưu màu xanh. | Đúng 1 thẻ h1. Trường Email có thuộc tính disabled, không cho phép nhập liệu. Nút Lưu màu xanh. | **PASS** | `EXE-01_GUI_Email_Check.png` | — |
+| **EXE-02** | Cập nhật hợp lệ — SĐT 10 số (Biên Min) | Họ tên: `"Nguyễn Văn A"`<br>SĐT: `"0912345678"` (10 số)<br>Đ/c: `"123 Lê Lợi"` | Cập nhật thành công (HTTP 200). Lưu SĐT 10 số vào CSDL. | Hệ thống từ chối và hiển thị thông báo lỗi: *"Số điện thoại không hợp lệ. Vui lòng nhập 9-10 chữ số"*. | **FAIL** | `EXE-02_Valid_10Digits_Phone.png` | **BUG-FR04-01** |
+| **EXE-03** | Cập nhật hợp lệ — SĐT 11 số (Biên Max) | Họ tên: `"Trần Thị B"`<br>SĐT: `"01234567890"` (11 số)<br>Đ/c: `"456 Nguyễn Huệ"` | Cập nhật thành công (HTTP 200). Lưu SĐT 11 số vào CSDL. | Hệ thống từ chối và hiển thị thông báo lỗi: *"Số điện thoại không hợp lệ. Vui lòng nhập 9-10 chữ số"*. | **FAIL** | `EXE-03_Valid_11Digits_Phone.png` | **BUG-FR04-01** |
+| **EXE-04** | Biên dưới Họ tên & Địa chỉ (Min = 1 ký tự) | Họ tên: `"A"` (1 char)<br>SĐT: `"0912345678"`<br>Đ/c: `"1"` (1 char) | Cập nhật thành công (HTTP 200). | Hệ thống chấp nhận độ dài tối thiểu 1 ký tự cho Họ Tên và Địa chỉ. Lưu thành công. | **PASS** | `EXE-04_BVA_Min_1Char.png` | — |
+| **EXE-05** | Biên trên Họ tên & Địa chỉ (Max = 255 ký tự) | Họ tên: `"A".repeat(255)`<br>Đ/c: `"B".repeat(255)` | Lưu thành công chuỗi 255 ký tự. Giao diện an toàn. | Hệ thống lưu thành công chuỗi 255 ký tự cho Họ Tên và Địa chỉ. Giao diện hiển thị an toàn, không bị tràn khung. | **PASS** | `EXE-05_BVA_Max_255Chars.png` | — |
+| **EXE-06** | Để trống Họ tên (Min - 1 = 0 ký tự) | Họ tên: `""`<br>SĐT: `"0912345678"`<br>Đ/c: `"123 Lê Lợi"` | Từ chối cập nhật. Báo lỗi phía TRÊN nút bấm (FR-22). | Hệ thống chặn cập nhật khi để trống Họ tên. Thông báo lỗi hiển thị bằng tiếng Việt rõ ràng ở phía trên nút bấm theo đúng FR-22. | **PASS** | `EXE-06_Error_Empty_Name.png` | — |
+| **EXE-07** | Để trống Địa chỉ (Min - 1 = 0 ký tự) | Họ tên: `"Nguyễn Văn A"`<br>SĐT: `"0912345678"`<br>Đ/c: `""` | Hệ thống từ chối và yêu cầu nhập địa chỉ bắt buộc. | Hệ thống cho phép lưu địa chỉ rỗng, hiển thị thông báo cập nhật thành công và ghi chuỗi rỗng vào CSDL. | **FAIL** | `EXE-07_Error_Empty_Address.png` | **BUG-FR04-02** |
+| **EXE-08** | Họ tên & Địa chỉ vượt biên trên (Max + 1 = 256 ký tự) | Họ tên: `"A".repeat(256)`<br>Đ/c: `"B".repeat(256)` | Chặn không cho nhập/lưu quá 255 ký tự. | Input cho phép nhập quá 255 ký tự. Hệ thống gửi request và trả về cập nhật thành công, không chặn giới hạn độ dài. | **FAIL** | `EXE-08_BVA_MaxPlus1_256Chars.png` | **BUG-FR04-03** |
+| **EXE-09** | Bỏ trống Số điện thoại | SĐT: `""` (Rỗng) | Chặn và hiển thị lỗi SĐT bắt buộc. | Hệ thống hiển thị: *"Số điện thoại không hợp lệ. Vui lòng nhập đúng 9-10 chữ số"*. Chặn thành công. | **PASS** | `EXE-09_Error_Empty_Phone.png` | — |
+| **EXE-10** | SĐT ngắn hơn quy định (Min - 1 = 9 chữ số) | SĐT: `"091234567"` (9 số) | Từ chối cập nhật vì SĐT phải từ 10–11 số. | Hệ thống từ chối cập nhật, hiển thị: *"Số điện thoại không hợp lệ. Vui lòng nhập đúng 9-10 chữ số"*. | **PASS** | `EXE-10_BVA_Phone_9Digits_Fail.png` | — |
+| **EXE-11** | SĐT dài hơn quy định (Max + 1 = 12 chữ số) | SĐT: `"012345678901"` (12 số) | Từ chối cập nhật vì vượt quá 11 số. | Hệ thống từ chối cập nhật, hiển thị: *"Số điện thoại không hợp lệ. Vui lòng nhập đúng 9-10 chữ số"*. | **PASS** | `EXE-11_BVA_Phone_12Digits_Fail.png` | — |
+| **EXE-12** | SĐT không bắt đầu bằng số 0 (Biên ASCII Min + 1) | SĐT: `"1912345678"` (10 số, bắt đầu bằng `'1'`) | Từ chối cập nhật vì vi phạm quy tắc bắt đầu bằng số `0`. | Hệ thống chấp nhận số điện thoại không bắt đầu bằng số không. Hệ thống hiển thị Cập nhật thành công. | **FAIL** | `EXE-12_BVA_Phone_NotStartWithZero.png` | **BUG-FR04-04** |
+| **EXE-13** | SĐT chứa chữ cái / ký tự đặc biệt | SĐT: `"091234567a"` | Từ chối cập nhật vì chứa ký tự không phải chữ số. | Hệ thống chặn cập nhật, hiển thị: *"Số điện thoại không hợp lệ. Vui lòng nhập đúng 9-10 chữ số"*. | **PASS** | `EXE-13_Error_Phone_With_Letters.png` | — |
+| **EXE-14** | Cố tình can thiệp thay đổi Email qua API payload | Body gửi: `"email": "hacker_moi@eshop.com"` | Backend bỏ qua hoặc từ chối, CSDL giữ nguyên email gốc. | Backend bỏ qua trường email trong payload, CSDL SQLite vẫn giữ nguyên email gốc 'test@eshop.com'. Đạt chuẩn an toàn FR-04. | **PASS** | `EXE-14_Security_Tamper_Email.png` | — |
+| **EXE-15** | Cố tình nâng quyền `role = "admin"` qua API | Body gửi: `"role": "admin"` | Backend cấm sửa `role` (HTTP 400/403). CSDL giữ `role = 'user'`. | Backend cập nhật trực tiếp `role = 'admin'` vào SQLite. Dùng tài khoản `test@eshop.com` đăng nhập được luôn vào Web Admin `http://localhost:5174/`! | **FAIL** | `EXE-15_Bug_Privilege_Escalation.png` | **BUG-FR04-05** |
+| **EXE-16** | Cố tình sửa hồ sơ tài khoản Admin (IDOR) | Body gửi: `id = 1, name = "Hacker"` | Từ chối cập nhật hoặc chỉ sửa hồ sơ chính mình. Admin giữ nguyên. | Hệ thống chỉ cập nhật theo ID trong JWT Token (`id = 2`). Hồ sơ của Admin (`id = 1`) được bảo vệ an toàn. | **PASS** | `EXE-16_Security_IDOR_Check.png` | — |
 
 ---
 
-## 5. Tá»”NG Há»¢P CÃC Lá»–I PHÃT HIá»†N (DEFECT SUMMARY)
+## 5. TỔNG HỢP CÁC LỖI PHÁT HIỆN (DEFECT SUMMARY)
 
-Tá»•ng sá»‘ test cases thá»±c thi: **16**  
-* **Passed:** 10/16 (62.50%)  
-* **Failed (PhÃ¡t hiá»‡n lá»—i):** 6/16 (37.50%)  
-*(Ghi chÃº: CÃ³ 6 ca kiá»ƒm thá»­ tháº¥t báº¡i do EXE-02 vÃ  EXE-03 Ä‘á»u phÃ¡t hiá»‡n lá»—i BUG-FR04-01).*  
+Tổng số test cases thực thi: **16**  
+* **Passed:** 10/16 (62.5%)  
+* **Failed (Phát hiện lỗi):** 6/16 (37.5%)  
 
-### Danh má»¥c 5 lá»—i phÃ¡t hiá»‡n Ä‘Æ°á»£c:
-1. **BUG-FR04-01 (High - Validation Logic Sai Lá»‡ch)**: Há»‡ thá»‘ng cháº·n cÃ¡c sá»‘ Ä‘iá»‡n thoáº¡i 10 sá»‘ vÃ  11 sá»‘ há»£p lá»‡ theo Ä‘áº·c táº£, Ä‘Æ°a ra thÃ´ng bÃ¡o sai lá»‡ch yÃªu cáº§u "9-10 chá»¯ sá»‘".
-2. **BUG-FR04-02 (Medium - Data Integrity)**: Há»‡ thá»‘ng cho phÃ©p cáº­p nháº­t vÃ  lÆ°u Äá»‹a chá»‰ giao hÃ ng rá»—ng vÃ o CSDL.
-3. **BUG-FR04-03 (Medium - Boundary Validation)**: KhÃ´ng kiá»ƒm soÃ¡t giá»›i háº¡n Ä‘á»™ dÃ i tá»‘i Ä‘a 255 kÃ½ tá»± trÃªn giao diá»‡n vÃ  backend, cho phÃ©p lÆ°u chuá»—i 256 kÃ½ tá»±.
-4. **BUG-FR04-04 (High - Boundary Validation)**: Há»‡ thá»‘ng bá» qua rÃ ng buá»™c báº¯t Ä‘áº§u báº±ng sá»‘ `0`, cháº¥p nháº­n lÆ°u cÃ¡c sá»‘ Ä‘iá»‡n thoáº¡i báº¯t Ä‘áº§u báº±ng chá»¯ sá»‘ khÃ¡c (`1-9`).
-5. **BUG-FR04-05 (Critical - Security / Privilege Escalation)**: Lá»— há»•ng Mass Assignment cho phÃ©p ngÆ°á»i dÃ¹ng tá»± thÄƒng quyá»n thÃ nh Admin thÃ´ng qua payload API `PUT /api/users/me`, vi pháº¡m nghiÃªm trá»ng Ä‘áº·c táº£ FR-04 vÃ  chuáº©n an ninh SEC-06.
-
+### Danh mục 5 lỗi phát hiện được:
+1. **BUG-FR04-01 (High - Validation Logic Sai Lệch)**: Hệ thống chặn các số điện thoại 10 số và 11 số hợp lệ theo đặc tả, đưa ra thông báo sai lệch yêu cầu "9-10 chữ số".
+2. **BUG-FR04-02 (Medium - Data Integrity)**: Hệ thống cho phép cập nhật và lưu Địa chỉ giao hàng rỗng vào CSDL.
+3. **BUG-FR04-03 (Medium - Boundary Validation)**: Không kiểm soát giới hạn độ dài tối đa 255 ký tự trên giao diện và backend, cho phép lưu chuỗi 256 ký tự.
+4. **BUG-FR04-04 (High - Boundary Validation)**: Hệ thống bỏ qua ràng buộc bắt đầu bằng số `0`, chấp nhận lưu các số điện thoại bắt đầu bằng chữ số khác (`1-9`).
+5. **BUG-FR04-05 (Critical - Security / Privilege Escalation)**: Lỗ hổng Mass Assignment cho phép người dùng tự thăng quyền thành Admin thông qua payload API `PUT /api/users/me`, vi phạm nghiêm trọng đặc tả FR-04 và chuẩn an ninh SEC-06.
