@@ -1,3 +1,22 @@
+commit a6cff9fbf58a52430697e09cca9b2028766f0e80
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 21:33:11 2026 +0700
+
+    Docs: Cap nhat tag mobile cho cac bug FR-05 trong checklist README
+
+ README.md                       |  46 ++++++++---------
+ bugs/created_github_issues.json | 109 ++++++++++++++++++++++++++++++++--------
+ 2 files changed, 111 insertions(+), 44 deletions(-)
+
+commit 5b514bea52114e8158eccf26602d1029146ab1ef
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 21:29:37 2026 +0700
+
+    Docs: Cap nhat git-commit-log.txt sau khi sua noi dung bugs
+
+ git-commit-log.txt | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
 commit 78ff4211f22ff13408114c2a878b8e81a6b41cf5
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
 Date:   Sun Oct 18 21:29:21 2026 +0700
