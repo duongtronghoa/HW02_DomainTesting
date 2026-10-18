@@ -1,3 +1,39 @@
+commit 6c8b5c362c72561b3277cc7e01ce7f81d2829128
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 21:22:06 2026 +0700
+
+    Build: Bo sung toan bo cac file bao cao PDF xuat tu Markdown (reports, bugs, ai-audit)
+
+ ai-audit/AI_Gap_Analysis_and_Critique_Consolidated.pdf | Bin 0 -> 282302 bytes
+ bugs/FR04_Bug_Report.pdf                               | Bin 0 -> 514070 bytes
+ bugs/FR05_Bug_Report.pdf                               | Bin 0 -> 274104 bytes
+ bugs/FR08_Bug_Report.pdf                               | Bin 0 -> 592656 bytes
+ bugs/FR17_Bug_Report.pdf                               | Bin 0 -> 845727 bytes
+ reports/pool-A/FR04_Domain_Testing_Report.pdf          | Bin 0 -> 313269 bytes
+ reports/pool-B/FR08_Domain_Testing_Report.pdf          | Bin 0 -> 298604 bytes
+ reports/pool-C/FR17_Domain_Testing_Report.pdf          | Bin 0 -> 331848 bytes
+ reports/pool-D/FR05_Domain_Testing_Report.pdf          | Bin 0 -> 275232 bytes
+ 9 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 3d812f92e66851705e723ad1b233c671c718bf90
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 21:20:55 2026 +0700
+
+    Docs: Cap nhat README.md voi bang Checklist 21 GitHub Issues va link truc tiep
+
+ README.md                       |  40 ++++++++-
+ bugs/created_github_issues.json | 191 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 229 insertions(+), 2 deletions(-)
+
+commit 494fb7b8f4ab5b7db0d56f84efe8b286945dd682
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 21:08:46 2026 +0700
+
+    Docs: Cap nhat git-commit-log.txt sau khi sua ma hoa UTF-8
+
+ git-commit-log.txt | 34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
+
 commit 7377d4b1034665f57cf6e0a73d24d1297a648ec8
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
 Date:   Sun Oct 18 21:08:37 2026 +0700
