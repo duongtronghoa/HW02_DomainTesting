@@ -1,3 +1,22 @@
+commit 4bcab2a50f971c253e34cc55659b3eb48990b2e4
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 22:04:01 2026 +0700
+
+    Docs: Bo sung thu muc screenshots/github-issues/ theo yeu cau Muc 14 de bai
+
+ README.md                          | 3 ++-
+ screenshots/github-issues/.gitkeep | 0
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 858f2ca42f6192560577402df1f80738d5139987
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 21:33:27 2026 +0700
+
+    Docs: Dong bo git-commit-log.txt
+
+ git-commit-log.txt | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
 commit a6cff9fbf58a52430697e09cca9b2028766f0e80
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
 Date:   Sun Oct 18 21:33:11 2026 +0700
