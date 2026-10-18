@@ -1,6 +1,22 @@
-﻿commit 5270fca5894e7b91b8b014b5fd2b9febe96fc001
+commit 7377d4b1034665f57cf6e0a73d24d1297a648ec8
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
-Date:   2026-10-18 20:55:08 +0700
+Date:   Sun Oct 18 21:08:37 2026 +0700
+
+    Fix: Chuan hoa ma hoa UTF-8 cho toan bo bao cao reports va bugs, khac phuc triet de loi font tieng Viet
+
+ bugs/FR04_Bug_Report.md                      | 240 +++++++++----------
+ bugs/FR05_Bug_Report.md                      | 194 +++++++--------
+ bugs/FR08_Bug_Report.md                      | 328 +++++++++++++------------
+ bugs/FR17_Bug_Report.md                      | 344 +++++++++++++++------------
+ reports/pool-A/FR04_Domain_Testing_Report.md | 170 +++++++------
+ reports/pool-B/FR08_Domain_Testing_Report.md | 165 +++++++------
+ reports/pool-C/FR17_Domain_Testing_Report.md | 205 ++++++++--------
+ reports/pool-D/FR05_Domain_Testing_Report.md | 153 ++++++------
+ 8 files changed, 923 insertions(+), 876 deletions(-)
+
+commit f18d96711f963cfac3032e8754810257b833e104
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 20:55:08 2026 +0700
 
     Refactor: Chuan hoa cau truc thu muc theo Pool, cap nhat README va hoan thien bao cao
 
@@ -23,7 +39,7 @@ Date:   2026-10-18 20:55:08 +0700
  bugs/FR17_Bug_Report.md                            | 189 +++++++++++
  bugs/FR17_github-issues-guide.md                   | 348 ---------------------
  bugs/github-issues-guide.md                        | 216 -------------
- git-commit-log.txt                                 | 113 +++++++
+ git-commit-log.txt                                 | 206 ++++++++++++
  reports/feature-A/FR04_Domain_Testing_Report.md    | 116 -------
  reports/feature-B/FR08_Domain_Testing_Report.md    | 115 -------
  reports/feature-C/FR17_Domain_Testing_Report.md    | 131 --------
@@ -89,11 +105,11 @@ Date:   2026-10-18 20:55:08 +0700
  .../EXE-12_BVA_MinPlus1_1_Char_Success.png         | Bin
  .../{fr05 => pool D}/EXE-13_BVA_Max_255_Chars.png  | Bin
  .../EXE-14_BVA_MaxPlus1_256_Chars.png              | Bin
- 85 files changed, 1569 insertions(+), 2448 deletions(-)
+ 85 files changed, 1662 insertions(+), 2448 deletions(-)
 
 commit 3c72f029f0b3612e489a9487f8433335bfa4faac
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
-Date:   2026-10-18 18:00:24 +0700
+Date:   Sun Oct 18 18:00:24 2026 +0700
 
     Feature-D [FR-05]: Domain Testing + BVA (Mobile) - Hoan thanh thiet ke va thuc thi 14 test cases va ghi nhan 4 bugs
 
@@ -119,7 +135,7 @@ Date:   2026-10-18 18:00:24 +0700
 
 commit b37ca32e646185133b6bf41fac3c18215532bf5f
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
-Date:   2026-10-18 16:39:20 +0700
+Date:   Sun Oct 18 16:39:20 2026 +0700
 
     Feature-C [FR-17]: Domain Testing + BVA - Hoan thanh thiet ke va thuc thi 14 test cases va ghi nhan 5 bugs
 
@@ -145,7 +161,7 @@ Date:   2026-10-18 16:39:20 +0700
 
 commit 694e7110ac85bb438addb3ceef7230e8c89f49a9
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
-Date:   2026-10-18 15:58:07 +0700
+Date:   Sun Oct 18 15:58:07 2026 +0700
 
     Feature-B [FR-08]: Domain Testing + BVA - Hoan thanh thiet ke va thuc thi 13 test cases va ghi nhan 7 bugs
 
@@ -170,7 +186,7 @@ Date:   2026-10-18 15:58:07 +0700
 
 commit 2fa86bcf9c82b254e91d13c677e94d7a9d0f89e3
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
-Date:   2026-10-18 14:44:55 +0700
+Date:   Sun Oct 18 14:44:55 2026 +0700
 
     Feature-A [FR-04]: Domain Testing + BVA - Hoan thanh thiet ke va thuc thi 16 test cases va ghi nhan 5 bugs
 
@@ -198,7 +214,7 @@ Date:   2026-10-18 14:44:55 +0700
 
 commit 38d9d44bcce7a45f35475035b290c5876b3151e5
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
-Date:   2026-10-18 12:55:03 +0700
+Date:   Sun Oct 18 12:55:03 2026 +0700
 
     Initial: Tao cau truc thu muc bai HW02
 
