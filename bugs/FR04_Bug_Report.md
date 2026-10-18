@@ -16,7 +16,7 @@
 ### 🐛 BUG #1: BUG-FR04-01 (High - Validation Logic Sai Lệch)
 
 * **Tiêu đề Issue:** `[FR-04][BUG] Hệ thống từ chối số điện thoại 10 và 11 chữ số hợp lệ và thông báo sai lệch 9-10 chữ số`
-* **Nhãn (Labels):** ``bug`, `high`, `FR-04`, `validation``
+* **Mã lỗi chuẩn hóa:** `BUG-FR04-001`
 * **Mức độ nghiêm trọng (Severity):** High
 * **Mức độ ưu tiên (Priority):** High
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -48,7 +48,7 @@ Hệ thống báo lỗi: *"Số điện thoại không hợp lệ. Vui lòng nh�
 ### 🐛 BUG #2: BUG-FR04-02 (Medium - Data Integrity)
 
 * **Tiêu đề Issue:** `[FR-04][BUG] Hệ thống cho phép cập nhật và lưu Địa chỉ giao hàng rỗng vào CSDL`
-* **Nhãn (Labels):** ``bug`, `medium`, `FR-04`, `data-integrity``
+* **Mã lỗi chuẩn hóa:** `BUG-FR04-002`
 * **Mức độ nghiêm trọng (Severity):** Medium
 * **Mức độ ưu tiên (Priority):** Medium
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -78,7 +78,7 @@ Hệ thống hiển thị thông báo "Cập nhật thành công" và CSDL lưu 
 ### 🐛 BUG #3: BUG-FR04-03 (Medium - Boundary Validation)
 
 * **Tiêu đề Issue:** `[FR-04][BUG] Không giới hạn độ dài tối đa 255 ký tự cho trường Họ Tên và Địa chỉ`
-* **Nhãn (Labels):** ``bug`, `medium`, `FR-04`, `boundary``
+* **Mã lỗi chuẩn hóa:** `BUG-FR04-003`
 * **Mức độ nghiêm trọng (Severity):** Medium
 * **Mức độ ưu tiên (Priority):** Low/Medium
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -107,7 +107,7 @@ Hệ thống chấp nhận và lưu chuỗi 256 ký tự thành công.
 ### 🐛 BUG #4: BUG-FR04-04 (High - Boundary Validation)
 
 * **Tiêu đề Issue:** `[FR-04][BUG] Hệ thống chấp nhận số điện thoại không bắt đầu bằng số 0`
-* **Nhãn (Labels):** ``bug`, `high`, `FR-04`, `boundary``
+* **Mã lỗi chuẩn hóa:** `BUG-FR04-004`
 * **Mức độ nghiêm trọng (Severity):** High
 * **Mức độ ưu tiên (Priority):** High
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -136,7 +136,7 @@ Hệ thống báo cập nhật thành công và lưu số điện thoại sai đ
 ### 🚨 BUG #5: BUG-FR04-05 (CRITICAL - SECURITY VULNERABILITY)
 
 * **Tiêu đề Issue:** `[FR-04][SEC-06][CRITICAL] Lỗ hổng Leo thang đặc quyền (Privilege Escalation) cho phép User tự đổi role="admin"`
-* **Nhãn (Labels):** ``bug`, `critical`, `security`, `FR-04`, `SEC-06``
+* **Mã lỗi chuẩn hóa:** `BUG-FR04-005`
 * **Mức độ nghiêm trọng (Severity):** Critical (Nghiêm trọng nhất)
 * **Mức độ ưu tiên (Priority):** Urgent / Immediate
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -144,15 +144,33 @@ Hệ thống báo cập nhật thành công và lưu số điện thoại sai đ
 #### 1. Mô tả lỗi
 Đặc tả FR-04 và SEC-06 nghiêm cấm: *"Người dùng chỉ có thể cập nhật hồ sơ của chính mình; không thể tự thay đổi thuộc tính role"*.
 Tuy nhiên, trong mã nguồn Backend tại `backend/server.js` (dòng 124-127):
+```javascript
+if (role) {
+  query += ", role = ?";
+  params.push(role);
+}
+```
+API `PUT /api/users/me` đã nhận trực tiếp tham số `role` từ body request và cập nhật thẳng vào CSDL SQLite mà không hề kiểm tra quyền hạn. Điều này tạo điều kiện cho bất kỳ người dùng thông thường nào cũng có thể tự cấp quyền Quản trị viên (`admin`) cho chính mình và chiếm quyền điều khiển toàn bộ hệ thống Web Admin.
 
 #### 2. Các bước tái hiện (Steps to Reproduce)
-
+1. Đăng nhập bằng tài khoản người dùng thường `test@eshop.com`.
+2. Mở PowerShell hoặc Postman, gửi request HTTP PUT tới `http://localhost:3000/api/users/me` với Header `Authorization: Bearer <token_user>` và body JSON:
+```json
+{
+  "name": "Nguyễn Văn A",
+  "phone": "0912345678",
+  "shipping_address": "123 Lê Lợi",
+  "role": "admin"
+}
+```
+3. Kiểm tra CSDL SQLite: Cột `role` của user chuyển thành `'admin'`.
+4. Mở trình duyệt truy cập Web Admin `http://localhost:5174/` bằng tài khoản `test@eshop.com` $\rightarrow$ Đăng nhập thành công và truy cập toàn bộ trang quản trị!
 
 #### 3. Kết quả mong đợi (Expected Result)
-
+Backend phải từ chối request có chứa thuộc tính `role` (HTTP 400 Bad Request hoặc 403 Forbidden) hoặc phớt lờ trường `role`, giữ nguyên quyền hạn ban đầu của người dùng.
 
 #### 4. Kết quả thực tế (Actual Result)
-
+Backend cập nhật thành công và trao quyền Admin cho tài khoản người dùng thường.
 
 #### 5. Bằng chứng hình ảnh (Screenshot)
 * **Ảnh minh chứng:** [`EXE-15_Bug_Privilege_Escalation.png`](../screenshots/pool%20A/EXE-15_Bug_Privilege_Escalation.png)

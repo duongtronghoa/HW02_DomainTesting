@@ -16,7 +16,7 @@
 ### 🚨 BUG #1: BUG-FR08-01 (CRITICAL - SECURITY / PRICE TAMPERING)
 
 * **Tiêu đề Issue:** `[FR-08][SEC-02][CRITICAL] Lỗ hổng Gian lận giá (Price Tampering) cho phép sửa tổng tiền thanh toán qua UI và API`
-* **Nhãn (Labels):** ``bug`, `critical`, `security`, `FR-08`, `business-logic``
+* **Mã lỗi chuẩn hóa:** `BUG-FR08-001`
 * **Mức độ nghiêm trọng (Severity):** Critical (Nghiêm trọng nhất - Lỗ hổng tài chính)
 * **Mức độ ưu tiên (Priority):** Urgent / Immediate
 * **Môi trường:** Chrome / Windows / EShop Local (Frontend: React, Backend: Node.js, CSDL: SQLite)
@@ -57,7 +57,7 @@ Giao diện cho phép nhập số tùy ý. Backend tạo đơn hàng thành côn
 ### 🐛 BUG #2: BUG-FR08-02 (High - State Transition / Data Integrity)
 
 * **Tiêu đề Issue:** `[FR-08][BUG] Giỏ hàng không được xóa sạch sau khi thanh toán thành công`
-* **Nhãn (Labels):** ``bug`, `high`, `FR-08`, `data-integrity``
+* **Mã lỗi chuẩn hóa:** `BUG-FR08-002`
 * **Mức độ nghiêm trọng (Severity):** High
 * **Mức độ ưu tiên (Priority):** High
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -94,7 +94,7 @@ Giỏ hàng vẫn còn nguyên các sản phẩm vừa mua và số lượng kh�
 ### 🐛 BUG #3: BUG-FR08-03 (High - Missing Mandatory Field & Validation)
 
 * **Tiêu đề Issue:** `[FR-08][FR-22][BUG] Form Checkout thiếu hoàn toàn trường Địa chỉ giao hàng và Backend chấp nhận lưu địa chỉ rỗng`
-* **Nhãn (Labels):** ``bug`, `high`, `FR-08`, `FR-22`, `validation``
+* **Mã lỗi chuẩn hóa:** `BUG-FR08-003`
 * **Mức độ nghiêm trọng (Severity):** High
 * **Mức độ ưu tiên (Priority):** High
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -127,7 +127,7 @@ Giao diện thiếu hoàn toàn ô nhập địa chỉ. Backend chấp nhận t�
 ### 🐛 BUG #4: BUG-FR08-04 (Medium - GUI Standard FR-21)
 
 * **Tiêu đề Issue:** `[FR-08][FR-21][BUG] Trang Checkout không có thẻ <h1> mô tả tiêu đề trang (đang dùng <h2>)`
-* **Nhãn (Labels):** ``bug`, `medium`, `FR-08`, `FR-21`, `gui``
+* **Mã lỗi chuẩn hóa:** `BUG-FR08-004`
 * **Mức độ nghiêm trọng (Severity):** Medium
 * **Mức độ ưu tiên (Priority):** Medium
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -137,15 +137,21 @@ Quy chuẩn giao diện chung FR-21 quy định rõ ràng:
 > *"Tiêu đề trang: Mỗi trang có đúng 1 thẻ `<h1>` mô tả nội dung trang."*
 
 Tuy nhiên, tại file `frontend-web/src/pages/Checkout.jsx` dòng 80, tiêu đề "Xác Nhận Đơn Hàng" được lập trình bằng thẻ `<h2>`:
+```jsx
+<h2 className="text-2xl font-bold mb-6">Xác Nhận Đơn Hàng</h2>
+```
+Toàn bộ trang Checkout không chứa bất kỳ thẻ `<h1>` nào, vi phạm chuẩn tiếp cận Accessibility và tiêu chuẩn giao diện FR-21.
 
 #### 2. Các bước tái hiện (Steps to Reproduce)
-
+1. Mở trang `http://localhost:5173/checkout`.
+2. Bật DevTools (F12) $\rightarrow$ Tab Console.
+3. Chạy lệnh: `document.querySelectorAll('h1').length`.
 
 #### 3. Kết quả mong đợi (Expected Result)
-
+Lệnh trả về kết quả bằng `1` (đúng 1 thẻ `<h1>` tiêu đề trang).
 
 #### 4. Kết quả thực tế (Actual Result)
-
+Lệnh trả về `0` (không có thẻ `<h1>` nào).
 
 #### 5. Bằng chứng hình ảnh (Screenshot)
 * **Ảnh minh chứng:** [`EXE-01_GUI_TotalAmount_And_H1_Check.png`](../screenshots/pool%20B/EXE-01_GUI_TotalAmount_And_H1_Check.png)
@@ -157,7 +163,7 @@ Tuy nhiên, tại file `frontend-web/src/pages/Checkout.jsx` dòng 80, tiêu đ�
 ### 🐛 BUG #5: BUG-FR08-05 (High - Business Logic / Empty Cart Checkout)
 
 * **Tiêu đề Issue:** `[FR-08][BUG] Hệ thống cho phép đặt hàng khi giỏ hàng hoàn toàn trống (items.length = 0) với tổng tiền 0 ₫`
-* **Nhãn (Labels):** ``bug`, `high`, `FR-08`, `boundary``
+* **Mã lỗi chuẩn hóa:** `BUG-FR08-005`
 * **Mức độ nghiêm trọng (Severity):** High
 * **Mức độ ưu tiên (Priority):** High
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -168,12 +174,20 @@ Tuy nhiên, Backend tại `backend/server.js` không kiểm tra số lượng ph
 
 #### 2. Các bước tái hiện (Steps to Reproduce)
 1. Gửi request `POST /api/checkout` với payload:
+```json
+{
+  "items": [],
+  "total_amount": 0,
+  "shipping_address": "Test Empty Cart"
+}
+```
+2. Kiểm tra phản hồi từ máy chủ và CSDL SQLite.
 
 #### 3. Kết quả mong đợi (Expected Result)
-
+Hệ thống phải từ chối (HTTP 400 Bad Request) với thông báo lỗi: "Giỏ hàng trống, không thể thanh toán".
 
 #### 4. Kết quả thực tế (Actual Result)
-
+Backend trả về HTTP 200 OK (`message: "Checkout successful"`), chèn đơn hàng rỗng có `total_amount = 0` vào CSDL SQLite.
 
 #### 5. Bằng chứng hình ảnh (Screenshot)
 * **Ảnh minh chứng:** [`EXE-07_Bug_BVA_Empty_Cart_Accepted.png`](../screenshots/pool%20B/EXE-07_Bug_BVA_Empty_Cart_Accepted.png)
@@ -185,7 +199,7 @@ Tuy nhiên, Backend tại `backend/server.js` không kiểm tra số lượng ph
 ### 🐛 BUG #6: BUG-FR08-06 (High - Data Integrity / Negative Quantity Accepted)
 
 * **Tiêu đề Issue:** `[FR-08][BUG] Backend chấp nhận tạo đơn hàng với sản phẩm có số lượng âm (quantity = -2)`
-* **Nhãn (Labels):** ``bug`, `high`, `FR-08`, `data-integrity``
+* **Mã lỗi chuẩn hóa:** `BUG-FR08-006`
 * **Mức độ nghiêm trọng (Severity):** High
 * **Mức độ ưu tiên (Priority):** High
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)
@@ -196,12 +210,20 @@ Backend API `POST /api/checkout` hoàn toàn bỏ qua việc xác thực thuộc
 
 #### 2. Các bước tái hiện (Steps to Reproduce)
 1. Gửi request `POST /api/checkout` với item có số lượng âm:
+```json
+{
+  "items": [{ "id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": -2 }],
+  "total_amount": -60000000,
+  "shipping_address": "Test Negative Qty"
+}
+```
+2. Quan sát phản hồi của Backend.
 
 #### 3. Kết quả mong đợi (Expected Result)
-
+Hệ thống phải từ chối với mã lỗi HTTP 400 Bad Request: "Số lượng sản phẩm không hợp lệ".
 
 #### 4. Kết quả thực tế (Actual Result)
-
+Hệ thống trả về HTTP 200 OK với thông báo thành công và ghi nhận đơn hàng.
 
 #### 5. Bằng chứng hình ảnh (Screenshot)
 * **Ảnh minh chứng:** [`EXE-08_Bug_Negative_Quantity_Accepted.png`](../screenshots/pool%20B/EXE-08_Bug_Negative_Quantity_Accepted.png)
@@ -213,7 +235,7 @@ Backend API `POST /api/checkout` hoàn toàn bỏ qua việc xác thực thuộc
 ### 🐛 BUG #7: BUG-FR08-07 (Medium - Boundary Validation / Address > 255 Chars)
 
 * **Tiêu đề Issue:** `[FR-08][BUG] Không giới hạn độ dài tối đa 255 ký tự cho trường Địa chỉ giao hàng`
-* **Nhãn (Labels):** ``bug`, `medium`, `FR-08`, `boundary``
+* **Mã lỗi chuẩn hóa:** `BUG-FR08-007`
 * **Mức độ nghiêm trọng (Severity):** Medium
 * **Mức độ ưu tiên (Priority):** Medium
 * **Môi trường:** Chrome 120 / Windows 11 / EShop Local (Frontend: React, Backend: Node.js)

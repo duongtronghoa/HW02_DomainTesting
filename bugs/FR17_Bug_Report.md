@@ -16,7 +16,7 @@
 ### 🚨 BUG #1: BUG-FR17-01 (CRITICAL - SECURITY / BROKEN ACCESS CONTROL)
 
 * **Tiêu đề Issue:** `[FR-17][SEC-03][CRITICAL] Lỗ hổng Broken Access Control cho phép người dùng thường tự tạo và xóa mã giảm giá`
-* **Nhãn (Labels):** ``bug`, `critical`, `security`, `FR-17`, `access-control``
+* **Mã lỗi chuẩn hóa:** `BUG-FR17-001`
 * **Mức độ nghiêm trọng (Severity):** Critical (Lỗ hổng bảo mật nghiêm trọng - Kiểm soát truy cập bị phá vỡ)
 * **Mức độ ưu tiên (Priority):** Urgent / Immediate
 * **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
@@ -48,21 +48,45 @@ Hậu quả: Một tài khoản người dùng bình thường (`test@eshop.com`
 
 #### 3. Kết quả mong đợi (Expected Result)
 Hệ thống phải kiểm tra vai trò Quản trị viên và từ chối mọi yêu cầu từ tài khoản thường với mã lỗi **HTTP 403 Forbidden**:
+```json
+{ "error": "Access denied. Admin role required." }
+```
 
 #### 4. Kết quả thực tế (Actual Result)
-
+Tài khoản thường thực hiện thành công cả 2 thao tác tạo mới và xóa mã giảm giá với **HTTP 200 OK**.
 
 #### 5. Bằng chứng hình ảnh (Screenshot)
 * **Ảnh minh chứng:** [`EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png`](../screenshots/pool%20C/EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png)
 
 ![EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png](../screenshots/pool%20C/EXE-04_Bug_Critical_NonAdmin_Create_Coupon.png)
 
+* **Ảnh minh chứng:** [`EXE-05_Bug_Critical_NonAdmin_Delete_Coupon.png`](../screenshots/pool%20C/EXE-05_Bug_Critical_NonAdmin_Delete_Coupon.png)
+
+![EXE-05_Bug_Critical_NonAdmin_Delete_Coupon.png](../screenshots/pool%20C/EXE-05_Bug_Critical_NonAdmin_Delete_Coupon.png)
+
+#### 6. Đề xuất khắc phục (Suggested Fix)
+Bổ sung middleware kiểm tra vai trò Admin trước khi thực hiện logic nghiệp vụ trong `backend/server.js`:
+```javascript
+function requireAdmin(req, res, next) {
+  if (!req.user || req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied: Admin role required' });
+  }
+  next();
+}
+
+app.post('/api/admin/coupons', authenticateToken, requireAdmin, (req, res) => { ... });
+app.delete('/api/admin/coupons/:id', authenticateToken, requireAdmin, (req, res) => { ... });
+```
+```
+
+---
+
 ---
 
 ### 💥 BUG #2: BUG-FR17-02 (HIGH - UNHANDLED EXCEPTION / CRASH ON DUPLICATE CODE)
 
 * **Tiêu đề Issue:** `[FR-17][HIGH] Backend gặp lỗi 500 Internal Server Error và văng exception SQLite khi tạo mã giảm giá bị trùng lặp`
-* **Nhãn (Labels):** ``bug`, `high`, `backend`, `FR-17`, `error-handling``
+* **Mã lỗi chuẩn hóa:** `BUG-FR17-002`
 * **Mức độ nghiêm trọng (Severity):** High (Lỗi sập luồng xử lý do không bắt ngoại lệ CSDL)
 * **Mức độ ưu tiên (Priority):** High
 * **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
@@ -89,21 +113,41 @@ Khi ngoại lệ xảy ra, câu lệnh `if (err) return res.status(500).json({ e
 
 #### 3. Kết quả mong đợi (Expected Result)
 Hệ thống phải kiểm tra hoặc bắt lỗi vi phạm ràng buộc UNIQUE, trả về mã lỗi client hợp lệ **HTTP 400 Bad Request** hoặc **HTTP 409 Conflict** kèm thông báo thân thiện:
+```json
+{ "error": "Mã giảm giá 'WELCOME10' đã tồn tại trong hệ thống." }
+```
 
 #### 4. Kết quả thực tế (Actual Result)
-
+Backend trả về **HTTP 500 Internal Server Error**:
+```json
+{ "error": "SQLITE_CONSTRAINT: UNIQUE constraint failed: coupons.code" }
+```
 
 #### 5. Bằng chứng hình ảnh (Screenshot)
 * **Ảnh minh chứng:** [`EXE-07_Bug_Duplicate_Code_500_Error.png`](../screenshots/pool%20C/EXE-07_Bug_Duplicate_Code_500_Error.png)
 
 ![EXE-07_Bug_Duplicate_Code_500_Error.png](../screenshots/pool%20C/EXE-07_Bug_Duplicate_Code_500_Error.png)
 
+#### 6. Đề xuất khắc phục (Suggested Fix)
+Xử lý lỗi cụ thể trong callback của câu lệnh `db.run`:
+```javascript
+if (err) {
+  if (err.message.includes('UNIQUE constraint failed')) {
+    return res.status(409).json({ error: 'Mã giảm giá đã tồn tại' });
+  }
+  return res.status(500).json({ error: 'Lỗi máy chủ nội bộ' });
+}
+```
+```
+
+---
+
 ---
 
 ### ⚠️ BUG #3: BUG-FR17-03 (HIGH - MISSING BOUNDARY & INPUT VALIDATION FOR NUMERIC FIELDS)
 
 * **Tiêu đề Issue:** `[FR-17][HIGH] Backend không kiểm tra ràng buộc số dương cho discount_value, min_order_amount và max_uses_per_user`
-* **Nhãn (Labels):** ``bug`, `high`, `backend`, `FR-17`, `data-validation``
+* **Mã lỗi chuẩn hóa:** `BUG-FR17-003`
 * **Mức độ nghiêm trọng (Severity):** High (Lỗi tính toàn vẹn dữ liệu và vi phạm phân tích biên)
 * **Mức độ ưu tiên (Priority):** High
 * **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
@@ -157,13 +201,27 @@ Tất cả các request trên đều được Backend chấp nhận với **HTTP
 
 #### 6. Đề xuất khắc phục (Suggested Fix)
 Thêm kiểm tra tính hợp lệ trước khi thực hiện câu lệnh Insert:
+```javascript
+if (!discount_value || Number(discount_value) <= 0) {
+  return res.status(400).json({ error: 'Mức giảm giá phải lớn hơn 0' });
+}
+if (min_order_amount !== undefined && Number(min_order_amount) < 0) {
+  return res.status(400).json({ error: 'Đơn hàng tối thiểu không được âm' });
+}
+if (max_uses_per_user !== undefined && Number(max_uses_per_user) < 1) {
+  return res.status(400).json({ error: 'Số lượt dùng tối đa phải từ 1 trở lên' });
+}
+```
+```
+
+---
 
 ---
 
 ### ⚠️ BUG #4: BUG-FR17-04 (HIGH - PERCENT DISCOUNT EXCEEDS 100%)
 
 * **Tiêu đề Issue:** `[FR-17][HIGH] Cho phép tạo mã giảm giá theo phần trăm vượt quá 100% (discount_value = 150%)`
-* **Nhãn (Labels):** ``bug`, `high`, `backend`, `FR-17`, `business-logic``
+* **Mã lỗi chuẩn hóa:** `BUG-FR17-004`
 * **Mức độ nghiêm trọng (Severity):** High (Lỗi quy tắc nghiệp vụ tài chính)
 * **Mức độ ưu tiên (Priority):** High
 * **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
@@ -190,21 +248,35 @@ Tuy nhiên, Backend `POST /api/admin/coupons` hoàn toàn không kiểm tra gi�
 
 #### 3. Kết quả mong đợi (Expected Result)
 Hệ thống phải từ chối yêu cầu với mã lỗi **HTTP 400 Bad Request** kèm thông báo lỗi:
+```json
+{ "error": "Mức giảm giá theo phần trăm không được vượt quá 100%" }
+```
 
 #### 4. Kết quả thực tế (Actual Result)
-
+Backend chấp nhận và lưu mã giảm giá 150% vào CSDL SQLite với mã phản hồi **HTTP 200 OK**.
 
 #### 5. Bằng chứng hình ảnh (Screenshot)
 * **Ảnh minh chứng:** [`EXE-10_Bug_BVA_Percent_Over100_Accepted.png`](../screenshots/pool%20C/EXE-10_Bug_BVA_Percent_Over100_Accepted.png)
 
 ![EXE-10_Bug_BVA_Percent_Over100_Accepted.png](../screenshots/pool%20C/EXE-10_Bug_BVA_Percent_Over100_Accepted.png)
 
+#### 6. Đề xuất khắc phục (Suggested Fix)
+Bổ sung kiểm tra logic phần trăm trong `backend/server.js`:
+```javascript
+if (discount_type === 'percent' && (Number(discount_value) < 1 || Number(discount_value) > 100)) {
+  return res.status(400).json({ error: 'Mức giảm phần trăm phải nằm trong khoảng từ 1 đến 100' });
+}
+```
+```
+
+---
+
 ---
 
 ### ℹ️ BUG #5: BUG-FR17-05 (MEDIUM - REST API NON-EXISTENT COUPON DELETION RETURNS 200 OK)
 
 * **Tiêu đề Issue:** `[FR-17][MEDIUM] Xóa mã giảm giá với ID không tồn tại trả về HTTP 200 OK thay vì HTTP 404 Not Found`
-* **Nhãn (Labels):** ``bug`, `medium`, `backend`, `FR-17`, `restful-api``
+* **Mã lỗi chuẩn hóa:** `BUG-FR17-005`
 * **Mức độ nghiêm trọng (Severity):** Medium (Vi phạm chuẩn thiết kế RESTful API)
 * **Mức độ ưu tiên (Priority):** Medium
 * **Môi trường:** Chrome / Windows / EShop Local (Backend API `http://localhost:3000`)
@@ -213,19 +285,49 @@ Hệ thống phải từ chối yêu cầu với mã lỗi **HTTP 400 Bad Reques
 Khi thực hiện xóa một tài nguyên không tồn tại thông qua phương thức `DELETE /api/admin/coupons/:id`, chuẩn RESTful API quy định hệ thống phải phản hồi mã **HTTP 404 Not Found** để thông báo cho phía client biết tài nguyên cần thao tác không có trong hệ thống.
 
 Tuy nhiên, tại `backend/server.js` dòng 483-490:
+```javascript
+app.delete('/api/admin/coupons/:id', authenticateToken, (req, res) => {
+  db.run('DELETE FROM coupons WHERE id = ?', [req.params.id], function(err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: 'Coupon deleted' });
+  });
+});
+```
+Hàm callback hoàn toàn không kiểm tra `this.changes`. Do đó dù `id = 99999` không tồn tại và không có bản ghi nào bị xóa (`this.changes === 0`), API vẫn trả về thông báo thành công `Coupon deleted` kèm mã HTTP 200 OK.
 
 #### 2. Các bước tái hiện (Steps to Reproduce)
-
+1. Gửi request `DELETE /api/admin/coupons/99999` với JWT Token hợp lệ.
+2. Quan sát Status Code và thông điệp trả về từ API.
 
 #### 3. Kết quả mong đợi (Expected Result)
-
+Hệ thống phải kiểm tra số dòng bị ảnh hưởng và trả về **HTTP 404 Not Found**:
+```json
+{ "error": "Không tìm thấy mã giảm giá với ID 99999" }
+```
 
 #### 4. Kết quả thực tế (Actual Result)
-
+API trả về **HTTP 200 OK** kèm thông báo:
+```json
+{ "message": "Coupon deleted" }
+```
 
 #### 5. Bằng chứng hình ảnh (Screenshot)
 * **Ảnh minh chứng:** [`EXE-13_Bug_Delete_NonExistent_ID_200OK.png`](../screenshots/pool%20C/EXE-13_Bug_Delete_NonExistent_ID_200OK.png)
 
 ![EXE-13_Bug_Delete_NonExistent_ID_200OK.png](../screenshots/pool%20C/EXE-13_Bug_Delete_NonExistent_ID_200OK.png)
+
+#### 6. Đề xuất khắc phục (Suggested Fix)
+Kiểm tra `this.changes` sau khi thực thi câu lệnh SQL DELETE:
+```javascript
+app.delete('/api/admin/coupons/:id', authenticateToken, requireAdmin, function(req, res) {
+  db.run('DELETE FROM coupons WHERE id = ?', [req.params.id], function(err) {
+    if (err) return res.status(500).json({ error: err.message });
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Mã giảm giá không tồn tại' });
+    }
+    res.json({ message: 'Coupon deleted' });
+  });
+});
+```
 
 ---
