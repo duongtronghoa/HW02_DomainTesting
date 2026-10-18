@@ -1,3 +1,24 @@
+commit 78ff4211f22ff13408114c2a878b8e81a6b41cf5
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 21:29:21 2026 +0700
+
+    Fix: Bo sung day du Cac buoc tai hien, Ket qua mong doi va Thuc te cho 21 bugs
+
+ bugs/FR04_Bug_Report.md |  34 +++++++++---
+ bugs/FR05_Bug_Report.md | 139 +++++++++++++++++++++++++++++++++++++++++++-----
+ bugs/FR08_Bug_Report.md |  50 ++++++++++++-----
+ bugs/FR17_Bug_Report.md | 124 ++++++++++++++++++++++++++++++++++++++----
+ 4 files changed, 301 insertions(+), 46 deletions(-)
+
+commit 612aef926f114aaa231fd2696c3a2cda8a5448f9
+Author: duongtronghoa <23120127@student.hcmus.edu.vn>
+Date:   Sun Oct 18 21:22:35 2026 +0700
+
+    Docs: Dong bo lan cuoi git-commit-log.txt voi toan bo lich su commit
+
+ git-commit-log.txt | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
 commit 6c8b5c362c72561b3277cc7e01ce7f81d2829128
 Author: duongtronghoa <23120127@student.hcmus.edu.vn>
 Date:   Sun Oct 18 21:22:06 2026 +0700
